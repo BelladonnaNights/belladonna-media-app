@@ -73,8 +73,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .slot-clear:hover{color:var(--text);background:var(--bg3);}
 
 /* POST LIBRARY BOTTOM PANEL */
-.library-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);}
-.library-panel-header{padding:10px 1.25rem 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:.5px solid var(--border2);background:var(--bg);flex-shrink:0;}
+.library-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);margin-top:6px;}
+.library-panel-header{padding:10px 1.25rem 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:2px solid var(--border2);background:var(--bg);flex-shrink:0;}
 .lib-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
 .filter-bar{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;}
 .filter-bar::-webkit-scrollbar{display:none;}
@@ -605,6 +605,9 @@ document.getElementById('img-upload-input').addEventListener('change', function(
 function renderIG() {
   const grid    = document.getElementById('ig-grid');
   const orderEl = document.getElementById('ig-order');
+
+  // Build scheduled list in strict calendar order:
+  // week 0 mon→sun, week 1 mon→sun ... maintaining slot order within each day
   const scheduled = [];
   for(let w=0;w<WEEKS;w++) {
     DAYS.forEach(day=>{
@@ -618,13 +621,15 @@ function renderIG() {
     });
   }
 
+  // Always show 33 cells (11 rows × 3 cols), rolling — first scheduled post
+  // goes in position 0 (top-left), reads left→right then down, like a real IG feed
+  const TOTAL_CELLS = 33;
   grid.innerHTML = '';
-  const total = Math.max(9, Math.ceil((scheduled.length+1)/3)*3);
-  for(let i=0;i<total;i++) {
+  for(let i=0;i<TOTAL_CELLS;i++) {
     const cell = document.createElement('div');
     cell.className = 'ig-cell';
-    if(scheduled[i]) {
-      const p  = scheduled[i];
+    const p = scheduled[i];
+    if(p) {
       const tc = TYPES[p.type]?.cls||'type-social';
       if(p.img) {
         cell.innerHTML = `
@@ -647,6 +652,7 @@ function renderIG() {
     grid.appendChild(cell);
   }
 
+  // Posting order list
   orderEl.innerHTML = '';
   if(!scheduled.length) { orderEl.innerHTML='<div class="empty">Schedule posts to see order.</div>'; return; }
   scheduled.forEach((p,i)=>{
