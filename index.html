@@ -18,12 +18,14 @@
   --font:'DM Sans',sans-serif;--cinzel:'Cinzel',serif;--serif:'EB Garamond',serif;
 }
 html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--text);}
+
 .nav{background:var(--bg);border-bottom:1px solid var(--border2);padding:0 1.25rem;display:flex;align-items:center;position:sticky;top:0;z-index:200;height:52px;}
 .nav-brand{font-family:var(--cinzel);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:1.25rem;white-space:nowrap;flex-shrink:0;}
 .nav-tabs{display:flex;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch;}
 .nav-tab{padding:14px 13px;font-size:10px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;font-family:var(--cinzel);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;white-space:nowrap;}
 .nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:600;}
 .nav-tab:hover:not(.active){color:var(--text);}
+
 .page{display:none;min-height:calc(100vh - 52px);}
 .page.active{display:flex;flex-direction:column;}
 .padded{padding:1.5rem 1.25rem 2rem;}
@@ -31,8 +33,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .page-title{font-family:var(--cinzel);font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px;}
 .page-sub{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;}
 .section-label{font-family:var(--cinzel);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+
 #tab-planner{height:calc(100vh - 52px);display:none;flex-direction:column;}
 #tab-planner.active{display:flex;}
+
 .cal-rail-wrap{background:var(--bg);border-bottom:1px solid var(--border2);flex-shrink:0;}
 .cal-rail-header{display:flex;align-items:center;justify-content:space-between;padding:10px 1.25rem 6px;gap:8px;}
 .cal-rail-title{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -57,6 +61,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .slot-clear{position:absolute;top:3px;right:4px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;line-height:1;padding:1px 3px;border-radius:3px;display:none;}
 .slot.has-post:hover .slot-clear{display:block;}
 .slot-clear:hover{color:var(--text);background:var(--bg3);}
+
 .library-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);margin-top:8px;}
 .library-panel-header{padding:10px 1.25rem 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:2px solid var(--border2);background:var(--bg);flex-shrink:0;}
 .lib-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
@@ -77,9 +82,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .post-card:hover{border-color:var(--gold-border);box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .post-card:active{cursor:grabbing;opacity:.8;}
 .post-card.scheduled{border-color:rgba(99,153,34,.4);}
-/* pointer-events:none on img prevents native browser image-drag from hijacking card drag.
-   Upload click is bound to the .post-thumb-wrap wrapper, so this doesn't break upload. */
-.post-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--bg3);pointer-events:none;}
+.post-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--bg3);}
 .post-card-img-placeholder{width:100%;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;}
 .post-card-img-placeholder span{font-size:20px;opacity:.4;}
 .post-card-img-placeholder small{font-size:9px;color:var(--text3);font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
@@ -90,6 +93,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .post-card-del{position:absolute;top:4px;right:4px;background:rgba(255,255,255,.85);border:none;color:var(--text2);cursor:pointer;font-size:12px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;line-height:1;}
 .post-card:hover .post-card-del{display:flex;}
 .post-card-del:hover{background:#fff;color:var(--text);}
+.img-upload-input{display:none;}
+
 .type-meme{background:#fdf3ef;border-color:#D85A30;color:#712B13;}
 .type-rook{background:#f2f0fe;border-color:#7F77DD;color:#3C3489;}
 .type-tag{background:#f0f7e6;border-color:#639922;color:#27500A;}
@@ -101,6 +106,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .type-imagery{background:#fdf5ea;border-color:#EF9F27;color:#633806;}
 .type-social{background:#f4f3f0;border-color:#888780;color:#444441;}
 .type-gig{background:#f2f9e8;border-color:#97C459;color:#3B6D11;}
+
 .ig-wrap{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;}
 .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;max-width:420px;}
 .ig-cell{aspect-ratio:3/4;background:var(--bg3);border-radius:2px;overflow:hidden;border:.5px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;}
@@ -116,11 +122,13 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .ig-order-info{flex:1;}
 .ig-order-badge{font-size:9px;font-family:var(--cinzel);letter-spacing:.03em;}
 .ig-order-title{font-size:12px;font-family:var(--serif);}
+
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
 .cat-card{border-radius:var(--radius-lg);padding:14px 16px;border:.5px solid var(--border);}
 .cat-card h3{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
 .cat-card .cat-day{font-family:var(--cinzel);font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:.65;}
 .cat-card p{font-size:13px;line-height:1.65;font-family:var(--serif);}
+
 .type-notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
 .type-note-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;display:flex;flex-direction:column;gap:8px;}
 .type-note-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;}
@@ -128,6 +136,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .type-note-textarea:focus{outline:none;border-color:var(--gold-border2);}
 .popout-btn{background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-size:10px;padding:2px 7px;font-family:var(--cinzel);letter-spacing:.04em;white-space:nowrap;}
 .popout-btn:hover{background:var(--gold-dim);}
+
 .popout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:center;justify-content:center;padding:1.5rem;}
 .popout-overlay.show{display:flex;}
 .popout-box{background:var(--bg);border-radius:var(--radius-lg);border:.5px solid var(--border2);width:100%;max-width:700px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
@@ -138,6 +147,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .popout-body{flex:1;overflow-y:auto;padding:1.25rem;}
 .popout-textarea{width:100%;border:.5px solid var(--border2);border-radius:var(--radius);padding:12px 14px;font-size:14px;font-family:var(--serif);background:var(--bg2);color:var(--text);resize:none;height:100%;min-height:340px;line-height:1.8;}
 .popout-textarea:focus{outline:none;border-color:var(--gold-border2);}
+
 .autosched-layout{display:flex;flex-direction:column;height:calc(100vh - 52px);}
 .autosched-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start;}
 .queue-panel{background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:1rem;min-width:240px;flex:1;max-width:340px;}
@@ -156,6 +166,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .autofill-btn:hover{opacity:.82;}
 .autofill-clear-btn{width:100%;padding:7px;font-family:var(--cinzel);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:none;border:.5px solid var(--border2);color:var(--text3);border-radius:var(--radius);cursor:pointer;}
 .autofill-clear-btn:hover{background:var(--bg3);color:var(--text);}
+
 .ideas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
 .idea-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;}
 .idea-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
@@ -167,16 +178,22 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .idea-input-row input:focus{outline:none;border-color:var(--gold-border2);}
 .idea-add-btn{padding:5px 10px;font-size:13px;background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-family:var(--cinzel);}
 .idea-add-btn:hover{background:var(--gold-dim);}
+
 .notes-area{width:100%;border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:14px;font-size:14px;font-family:var(--serif);background:var(--bg);color:var(--text);resize:vertical;min-height:220px;line-height:1.8;}
 .notes-area:focus{outline:none;border-color:var(--gold-border2);}
 .notes-hint{font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
+
 .card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;}
 .empty{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);padding:.5rem 0;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#1a1714;font-size:11px;font-weight:700;padding:8px 20px;border-radius:99px;transition:transform .22s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:var(--cinzel);letter-spacing:.08em;text-transform:uppercase;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ══ QUEUE TAB ══ */
 #tab-queue{height:calc(100vh - 52px);display:none;flex-direction:column;}
 #tab-queue.active{display:flex;}
 .queue-tab-layout{flex:1;overflow:hidden;display:flex;flex-direction:row;}
+
+/* schedule side panel */
 .sched-panel{width:240px;flex-shrink:0;background:var(--bg);border-right:1px solid var(--border2);display:flex;flex-direction:column;overflow:hidden;}
 .sched-panel-header{padding:10px 12px 8px;border-bottom:.5px solid var(--border2);display:flex;align-items:center;gap:6px;}
 .sched-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;}
@@ -192,6 +209,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .sched-slot-act{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:1px 3px;border-radius:3px;flex-shrink:0;line-height:1;}
 .sched-slot-act:hover{color:var(--text);background:var(--bg3);}
 .sched-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;cursor:pointer;border:.5px solid rgba(0,0,0,.15);}
+
+/* add-slot mini form (slides in below header) */
 .sched-add-form{background:var(--bg2);border-bottom:.5px solid var(--border2);padding:8px 10px;display:none;flex-direction:column;gap:5px;}
 .sched-add-form.open{display:flex;}
 .sched-add-form select,.sched-add-form input{width:100%;padding:5px 8px;font-size:11px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:var(--font);}
@@ -200,11 +219,15 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .sched-add-form-row button{flex:1;padding:5px;font-size:11px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;border-radius:var(--radius);cursor:pointer;border:none;}
 .sched-add-confirm{background:var(--text);color:var(--bg);}
 .sched-add-cancel{background:none;border:.5px solid var(--border2) !important;color:var(--text2);}
+
+/* color palette for slots */
 .color-picker-pop{position:fixed;z-index:400;background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:8px;display:none;flex-wrap:wrap;gap:5px;width:140px;box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .color-picker-pop.open{display:flex;}
 .cp-swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:.5px solid rgba(0,0,0,.1);transition:transform .1s;}
 .cp-swatch:hover{transform:scale(1.2);}
-.post-thumb-wrap{position:relative;flex-shrink:0;cursor:pointer;}
+
+/* multi-page indicators */
+.post-thumb-wrap{position:relative;flex-shrink:0;}
 .carousel-icon{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);border-radius:3px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;}
 .carousel-icon svg{width:10px;height:10px;fill:white;}
 .pages-badge{font-size:9px;font-weight:600;background:rgba(0,0,0,.6);color:#fff;border-radius:3px;padding:1px 4px;font-family:var(--cinzel);position:absolute;bottom:3px;left:3px;line-height:1.4;}
@@ -212,6 +235,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .slot-pages-badge{font-size:8px;font-weight:600;background:rgba(0,0,0,.55);color:#fff;border-radius:2px;padding:1px 3px;font-family:var(--cinzel);position:absolute;bottom:2px;left:2px;line-height:1.3;}
 .slot-carousel{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);border-radius:2px;width:11px;height:11px;display:flex;align-items:center;justify-content:center;}
 .slot-carousel svg{width:8px;height:8px;fill:white;}
+
+/* main queue area */
 .queue-main{flex:1;overflow-y:auto;padding:1.25rem;}
 .queue-main-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;}
 .queue-main-title{font-family:var(--cinzel);font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -220,11 +245,15 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .push-cal-btn:hover{opacity:.82;}
 .push-cal-btn-ghost{padding:7px 14px;font-family:var(--cinzel);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:none;border:.5px solid var(--border2);color:var(--text2);border-radius:var(--radius);cursor:pointer;}
 .push-cal-btn-ghost:hover{background:var(--bg3);color:var(--text);}
+
+/* week blocks in queue */
 .qweek-block{margin-bottom:1.5rem;}
 .qweek-label{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;padding-bottom:5px;border-bottom:.5px solid var(--border);}
 .qday-block{margin-bottom:10px;}
 .qday-label{font-family:var(--cinzel);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
 .qslot-list{display:flex;flex-direction:column;gap:5px;}
+
+/* individual queue slot card */
 .qslot-card{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);cursor:grab;transition:border-color .12s,box-shadow .12s;position:relative;}
 .qslot-card:hover{border-color:var(--gold-border);box-shadow:0 2px 8px rgba(0,0,0,.05);}
 .qslot-card.drag-over-q{background:var(--gold-dim);border-color:var(--gold-border2);}
@@ -239,10 +268,12 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .qslot-drag-handle{color:var(--text3);font-size:14px;cursor:grab;padding:0 2px;flex-shrink:0;}
 .qslot-rm{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 5px;border-radius:4px;flex-shrink:0;}
 .qslot-rm:hover{color:var(--text);background:var(--bg3);}
+
 @media(max-width:600px){.nav-brand{font-size:10px;}.post-card{width:140px;}.ig-grid{max-width:100%;}.sched-panel{width:160px;}}
 </style>
 </head>
 <body>
+
 <nav class="nav">
   <div class="nav-brand">Belladonna</div>
   <div class="nav-tabs">
@@ -256,6 +287,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     <button class="nav-tab" onclick="showTab('notes',this)">Notes</button>
   </div>
 </nav>
+
 <div id="tab-planner" class="page active">
   <div class="cal-rail-wrap">
     <div class="cal-rail-header">
@@ -285,8 +317,12 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     <div class="post-cards-scroll" id="post-cards-scroll"></div>
   </div>
 </div>
+
+<!-- ══ QUEUE TAB ══ -->
 <div id="tab-queue" class="page">
   <div class="queue-tab-layout">
+
+    <!-- Left: editable schedule template -->
     <div class="sched-panel">
       <div class="sched-panel-header">
         <div class="sched-panel-title">Schedule Template</div>
@@ -320,6 +356,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
       </div>
       <div class="sched-day-list" id="sched-day-list"></div>
     </div>
+
+    <!-- Right: auto-populated queue -->
     <div class="queue-main">
       <div class="queue-main-header">
         <div class="queue-main-title">Post Queue</div>
@@ -330,8 +368,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
       </div>
       <div id="queue-weeks"></div>
     </div>
+
   </div>
 </div>
+
 <div id="tab-autosched" class="page">
   <div class="autosched-layout">
     <div class="cal-rail-wrap">
@@ -356,6 +396,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div id="tab-ig" class="page">
   <div class="padded" style="flex:1;overflow-y:auto;">
     <div class="container">
@@ -368,6 +409,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div id="tab-categories" class="page">
   <div class="padded" style="flex:1;overflow-y:auto;">
     <div class="container">
@@ -377,6 +419,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div id="tab-typenotes" class="page">
   <div class="padded" style="flex:1;overflow-y:auto;">
     <div class="container">
@@ -386,6 +429,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div id="tab-ideas" class="page">
   <div class="padded" style="flex:1;overflow-y:auto;">
     <div class="container">
@@ -395,6 +439,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div id="tab-notes" class="page">
   <div class="padded" style="flex:1;overflow-y:auto;">
     <div class="container">
@@ -407,8 +452,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
 <div class="toast" id="toast"></div>
-<!-- Upload input lives outside all scroll containers, appended to body at runtime -->
+<input type="file" class="img-upload-input" id="img-upload-input" accept="image/*"/>
+
 <div class="popout-overlay" id="popout-overlay" onclick="closePopout(event)">
   <div class="popout-box">
     <div class="popout-header">
@@ -420,7 +467,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
     </div>
   </div>
 </div>
+
+<!-- color picker popup -->
 <div class="color-picker-pop" id="color-picker-pop"></div>
+
 <script>
 const WEEKS=8;
 const DAYS=[
@@ -462,44 +512,35 @@ const IDEAS_SEED={
   social:['Screenshot of a 5-star review','Fan DM reaction','Press mention graphic'],
 };
 
-let posts     = JSON.parse(localStorage.getItem('bella_posts_v3')   || '[]');
-let schedule  = JSON.parse(localStorage.getItem('bella_schedule_v3')|| '{}');
-let ideas     = JSON.parse(localStorage.getItem('bella_ideas_v3')   || 'null') || Object.fromEntries(Object.keys(TYPES).map(k=>[k,(IDEAS_SEED[k]||[]).slice()]));
-let typeNotes = JSON.parse(localStorage.getItem('bella_typenotes')  || '{}');
-let notes     = localStorage.getItem('bella_notes_v3') || '';
-let activeFilter = 'all', popoutKey = null;
+let posts=JSON.parse(localStorage.getItem('bella_posts_v3')||'[]');
+let schedule=JSON.parse(localStorage.getItem('bella_schedule_v3')||'{}');
+let ideas=JSON.parse(localStorage.getItem('bella_ideas_v3')||'null')||Object.fromEntries(Object.keys(TYPES).map(k=>[k,(IDEAS_SEED[k]||[]).slice()]));
+let typeNotes=JSON.parse(localStorage.getItem('bella_typenotes')||'{}');
+let notes=localStorage.getItem('bella_notes_v3')||'';
+let activeFilter='all',pendingImgPostId=null,popoutKey=null;
 
-// ── SAVE — debounced for textarea events, immediate for structural changes ──
-let _saveTimer = null;
-function save(immediate) {
-  if (immediate) { _doSave(); return; }
-  clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(_doSave, 400);
-}
-function _doSave() {
-  localStorage.setItem('bella_posts_v3',   JSON.stringify(posts));
+function save(){
+  localStorage.setItem('bella_posts_v3',JSON.stringify(posts));
   localStorage.setItem('bella_schedule_v3',JSON.stringify(schedule));
-  localStorage.setItem('bella_ideas_v3',   JSON.stringify(ideas));
-  localStorage.setItem('bella_typenotes',  JSON.stringify(typeNotes));
+  localStorage.setItem('bella_ideas_v3',JSON.stringify(ideas));
+  localStorage.setItem('bella_typenotes',JSON.stringify(typeNotes));
 }
 
-// ── TAB SWITCHING ──────────────────────────────────────────────────────
-function showTab(id, btn) {
+function showTab(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
-  if(id==='planner')   renderCalendar();
-  if(id==='queue')     {renderSchedPanel();renderQueueWeeks();}
-  if(id==='autosched') renderAutoSched();
-  if(id==='ig')        renderIG();
+  if(id==='planner')renderCalendar();
+  if(id==='queue'){renderSchedPanel();renderQueueWeeks();}
+  if(id==='autosched')renderAutoSched();
+  if(id==='ig')renderIG();
   if(id==='categories')renderCategories();
-  if(id==='typenotes') renderTypeNotes();
-  if(id==='ideas')     renderIdeas();
+  if(id==='typenotes')renderTypeNotes();
+  if(id==='ideas')renderIdeas();
 }
 
-// ── CALENDAR ───────────────────────────────────────────────────────────
-function buildCalendarInto(scrollEl) {
+function buildCalendarInto(scrollEl){
   scrollEl.innerHTML='';
   for(let w=0;w<WEEKS;w++){
     if(w>0){const d=document.createElement('div');d.className='week-divider';scrollEl.appendChild(d);}
@@ -513,16 +554,11 @@ function buildCalendarInto(scrollEl) {
     scrollEl.appendChild(block);
   }
 }
-function renderCalendar()    {buildCalendarInto(document.getElementById('cal-scroll'));}
+function renderCalendar(){buildCalendarInto(document.getElementById('cal-scroll'));}
 function renderAutoCalendar(){buildCalendarInto(document.getElementById('cal-scroll-auto'));}
-
-// FIX: only rebuild auto-cal when that tab is visible — avoids double full rebuild
 function refreshBothCalendars(){
   renderCalendar();
-  if(document.getElementById('tab-autosched').classList.contains('active')){
-    renderAutoCalendar();
-    renderAutoQueue();
-  }
+  if(document.getElementById('tab-autosched').classList.contains('active')){renderAutoCalendar();renderAutoQueue();}
 }
 
 function renderSlot(container,slotId,slotType){
@@ -530,51 +566,30 @@ function renderSlot(container,slotId,slotType){
   const slot=document.createElement('div');
   slot.className='slot'+(post?' has-post':'');
   if(post){
-    // draggable="false" on img prevents browser native-image-drag hijack
-    const imgEl=post.img
-      ?`<img class="slot-img" src="${post.img}" alt="" draggable="false"/>`
-      :`<div style="width:28px;height:28px;border-radius:4px;background:var(--bg3);flex-shrink:0;margin-right:6px;"></div>`;
+    const imgEl=post.img?`<img class="slot-img" src="${post.img}" alt=""/>`:`<div style="width:28px;height:28px;border-radius:4px;background:var(--bg3);flex-shrink:0;margin-right:6px;"></div>`;
     slot.innerHTML=`${imgEl}<div class="slot-info"><div class="slot-name">${post.title}</div><div class="slot-type">${TYPES[post.type]?.label||post.type}</div></div><button class="slot-clear" onclick="clearSlot('${slotId}',event)">×</button>`;
-  }else{
-    slot.innerHTML=`<span class="slot-placeholder">${SLOT_NAMES[slotType]||slotType}</span>`;
-  }
+  }else{slot.innerHTML=`<span class="slot-placeholder">${SLOT_NAMES[slotType]||slotType}</span>`;}
   slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drag-over');});
   slot.addEventListener('dragleave',()=>slot.classList.remove('drag-over'));
   slot.addEventListener('drop',e=>{
-    e.preventDefault();
-    slot.classList.remove('drag-over');
-    const pid2=e.dataTransfer.getData('text/plain');
-    // Ignore drags from queue tab ('qslot:N') or schedule panel ('sched')
-    if(!pid2 || pid2.startsWith('qslot:') || pid2==='sched') return;
+    e.preventDefault();slot.classList.remove('drag-over');
+    const pid2=e.dataTransfer.getData('text/plain');if(!pid2)return;
     Object.keys(schedule).forEach(k=>{if(schedule[k]===pid2)delete schedule[k];});
-    schedule[slotId]=pid2;
-    save(true);
-    renderCalendar();   // only rebuild planner calendar, not both
-    renderLibrary();
+    schedule[slotId]=pid2;save();refreshBothCalendars();renderLibrary();
   });
   slot.addEventListener('dblclick',()=>clearSlot(slotId));
   container.appendChild(slot);
 }
-function clearSlot(slotId,e){
-  if(e)e.stopPropagation();
-  delete schedule[slotId];
-  save(true);
-  renderCalendar();
-  renderLibrary();
-  showToast('Slot cleared');
-}
+function clearSlot(slotId,e){if(e)e.stopPropagation();delete schedule[slotId];save();refreshBothCalendars();renderLibrary();showToast('Slot cleared');}
 
-// ── POSTS ──────────────────────────────────────────────────────────────
 function addPost(){
   const title=document.getElementById('new-title').value.trim(),type=document.getElementById('new-type').value;
   const pagesVal=parseInt(document.getElementById('new-pages').value)||1;
   if(!title){showToast('Enter a title first');return;}
-  posts.push({id:Date.now().toString(),title,type,img:null,pages:pagesVal>1?pagesVal:1});
-  save(true);
+  posts.push({id:Date.now().toString(),title,type,img:null,pages:pagesVal>1?pagesVal:1});save();
   document.getElementById('new-title').value='';document.getElementById('new-pages').value='';
   renderLibrary();showToast('Post added');
 }
-
 function renderLibrary(){
   const scroll=document.getElementById('post-cards-scroll'),filterBar=document.getElementById('filter-bar');
   const typeCounts={};posts.forEach(p=>{typeCounts[p.type]=(typeCounts[p.type]||0)+1;});
@@ -603,83 +618,32 @@ function renderLibrary(){
     const tc=TYPES[post.type]?.cls||'type-social';
     const isMulti=(post.pages||1)>1;
     const carouselOverlay=isMulti?`<div class="carousel-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><rect x="7" y="2" width="15" height="14" rx="2" opacity=".5"/></svg></div><div class="pages-badge">${post.pages}</div>`:'';
-
-    // FIX: capture postId in closure-local const so re-renders don't stomp it
-    const postId = post.id;
-
-    // FIX: draggable="false" on img prevents browser hijacking the drag with native image drag
     const imgWrap=post.img
-      ?`<div class="post-thumb-wrap"><img class="post-card-img" src="${post.img}" alt="" draggable="false"/>${carouselOverlay}</div>`
-      :`<div class="post-thumb-wrap"><div class="post-card-img-placeholder"><span>＋</span><small>Add photo</small></div>${carouselOverlay}</div>`;
-
-    card.innerHTML=`${imgWrap}<div class="post-card-body"><span class="post-card-badge ${tc}">${TYPES[post.type]?.label||post.type}</span>${isMulti?`<span style="font-size:9px;color:var(--text3);margin-left:4px;font-family:var(--cinzel);">${post.pages} slides</span>`:''}<div class="post-card-title">${post.title}</div>${scheduledIds.has(post.id)?'<span class="post-card-scheduled">Scheduled</span>':''}</div><button class="post-card-del" title="Delete post">×</button>`;
-
-    // Bind upload click to thumb wrap. stopPropagation prevents the draggable
-    // card from intercepting the click as a drag-start on some browsers.
-    const thumbWrap = card.querySelector('.post-thumb-wrap');
-    if(thumbWrap) thumbWrap.addEventListener('click', e => {
-      e.stopPropagation();
-      triggerImgUpload(postId);
-    });
-    card.querySelector('.post-card-del').addEventListener('click',e=>{e.stopPropagation();deletePost(postId);});
-    // FIX: use dragstart on the card itself; postId captured in closure
-    card.addEventListener('dragstart',e=>{
-      e.dataTransfer.setData('text/plain', postId);
-      e.dataTransfer.effectAllowed='move';
-    });
+      ?`<div class="post-thumb-wrap"><img class="post-card-img" src="${post.img}" alt="" onclick="triggerImgUpload('${post.id}')"/>${carouselOverlay}</div>`
+      :`<div class="post-thumb-wrap"><div class="post-card-img-placeholder" onclick="triggerImgUpload('${post.id}')"><span>＋</span><small>Add photo</small></div>${carouselOverlay}</div>`;
+    card.innerHTML=`${imgWrap}<div class="post-card-body"><span class="post-card-badge ${tc}">${TYPES[post.type]?.label||post.type}</span>${isMulti?`<span style="font-size:9px;color:var(--text3);margin-left:4px;font-family:var(--cinzel);">${post.pages} slides</span>`:''}<div class="post-card-title">${post.title}</div>${scheduledIds.has(post.id)?'<span class="post-card-scheduled">Scheduled</span>':''}</div><button class="post-card-del" onclick="deletePost('${post.id}')">×</button>`;
+    card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',post.id);e.dataTransfer.effectAllowed='move';});
     scroll.appendChild(card);
   });
 }
-
 function deletePost(id){
   posts=posts.filter(p=>p.id!==id);
   Object.keys(schedule).forEach(k=>{if(schedule[k]===id)delete schedule[k];});
-  save(true);renderLibrary();refreshBothCalendars();showToast('Post removed');
+  save();renderLibrary();refreshBothCalendars();showToast('Post removed');
 }
 
-// ── IMAGE UPLOAD — fixed ───────────────────────────────────────────────
-// Root cause of the original bug: inline onclick used a global `pendingImgPostId`
-// that could be overwritten between click and file-picker return if re-renders fired.
-// ── IMAGE UPLOAD ──────────────────────────────────────────────────────
-// Strategy: create a fresh <input> each time, append directly to document.body
-// (never inside a clipped/hidden container), click it, then remove it after use.
-// A fresh element guarantees the 'change' event fires even for the same file twice.
-// postId is captured in the addEventListener closure — no shared global needed.
-function triggerImgUpload(postId) {
-  // Remove any leftover input from a previous aborted upload
-  const old = document.getElementById('_bella_upload_input');
-  if (old) old.remove();
+function triggerImgUpload(postId){pendingImgPostId=postId;document.getElementById('img-upload-input').click();}
+document.getElementById('img-upload-input').addEventListener('change',function(){
+  const file=this.files[0];if(!file||!pendingImgPostId)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const post=posts.find(p=>p.id===pendingImgPostId);
+    if(post){post.img=e.target.result;save();renderLibrary();refreshBothCalendars();renderIG();showToast('Photo added');}
+    pendingImgPostId=null;this.value='';
+  };
+  reader.readAsDataURL(file);
+});
 
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.id = '_bella_upload_input';
-  input.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0.01;z-index:-1;';
-
-  input.addEventListener('change', function() {
-    const file = this.files && this.files[0];
-    this.remove(); // clean up immediately
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const post = posts.find(p => p.id === postId);
-      if (post) {
-        post.img = e.target.result;
-        save(true);
-        renderLibrary();
-        renderCalendar();
-        showToast('Photo added ✓');
-      }
-    };
-    reader.onerror = () => showToast('Could not read image file');
-    reader.readAsDataURL(file);
-  });
-
-  document.body.appendChild(input);
-  input.click();
-}
-
-// ── IG PREVIEW ─────────────────────────────────────────────────────────
 function renderIG(){
   const grid=document.getElementById('ig-grid'),orderEl=document.getElementById('ig-order');
   const scheduled=[];
@@ -713,7 +677,6 @@ function renderIG(){
   });
 }
 
-// ── CATEGORIES ─────────────────────────────────────────────────────────
 function renderCategories(){
   const grid=document.getElementById('cat-grid');grid.innerHTML='';
   Object.entries(CAT_INFO).forEach(([key,cat])=>{
@@ -723,19 +686,13 @@ function renderCategories(){
   });
 }
 
-// ── TYPE NOTES ─────────────────────────────────────────────────────────
 function renderTypeNotes(){
   const grid=document.getElementById('type-notes-grid');grid.innerHTML='';
   Object.entries(TYPES).forEach(([key,t])=>{
     const card=document.createElement('div');card.className='type-note-card';
     card.innerHTML=`<h4><span class="post-card-badge ${t.cls}" style="display:inline-block">${t.label}</span><button class="popout-btn" onclick="openPopout('${key}')">⤢ Pop out</button></h4><textarea class="type-note-textarea" id="typenote-${key}" placeholder="Notes, strategy, tone tips for ${t.label}...">${typeNotes[key]||''}</textarea>`;
     const ta=card.querySelector('textarea');
-    // FIX: debounced save — was hitting localStorage on every keystroke
-    ta.addEventListener('input',()=>{
-      typeNotes[key]=ta.value;
-      if(popoutKey===key)document.getElementById('popout-textarea').value=ta.value;
-      save(); // debounced
-    });
+    ta.addEventListener('input',()=>{typeNotes[key]=ta.value;if(popoutKey===key)document.getElementById('popout-textarea').value=ta.value;save();});
     grid.appendChild(card);
   });
 }
@@ -747,18 +704,15 @@ function openPopout(key){
   setTimeout(()=>document.getElementById('popout-textarea').focus(),50);
 }
 function closePopoutBtn(){
-  if(popoutKey){const val=document.getElementById('popout-textarea').value;typeNotes[popoutKey]=val;save(true);const ta=document.getElementById('typenote-'+popoutKey);if(ta)ta.value=val;}
+  if(popoutKey){const val=document.getElementById('popout-textarea').value;typeNotes[popoutKey]=val;save();const ta=document.getElementById('typenote-'+popoutKey);if(ta)ta.value=val;}
   popoutKey=null;document.getElementById('popout-overlay').classList.remove('show');
 }
 function closePopout(e){if(e.target===document.getElementById('popout-overlay'))closePopoutBtn();}
 document.getElementById('popout-textarea').addEventListener('input',function(){
-  if(!popoutKey)return;
-  typeNotes[popoutKey]=this.value;
-  save(); // debounced
+  if(!popoutKey)return;typeNotes[popoutKey]=this.value;save();
   const ta=document.getElementById('typenote-'+popoutKey);if(ta)ta.value=this.value;
 });
 
-// ── AUTO SCHED ─────────────────────────────────────────────────────────
 function renderAutoSched(){renderAutoCalendar();renderAutoQueue();}
 function renderAutoQueue(){
   const typeListEl=document.getElementById('queue-type-list'),postListEl=document.getElementById('queue-post-list');
@@ -794,16 +748,15 @@ function autoFill(){
       });
     }
   }
-  save(true);refreshBothCalendars();renderAutoQueue();renderLibrary();
+  save();refreshBothCalendars();renderAutoQueue();renderLibrary();
   showToast(filled?`${filled} post${filled>1?'s':''} scheduled!`:'No matching posts to fill');
 }
 function clearAllSlots(){
   if(!confirm('Clear all scheduled slots?'))return;
   Object.keys(schedule).forEach(k=>delete schedule[k]);
-  save(true);refreshBothCalendars();renderAutoQueue();renderLibrary();showToast('All slots cleared');
+  save();refreshBothCalendars();renderAutoQueue();renderLibrary();showToast('All slots cleared');
 }
 
-// ── IDEAS ──────────────────────────────────────────────────────────────
 function renderIdeas(){
   const grid=document.getElementById('ideas-grid');grid.innerHTML='';
   Object.entries(TYPES).forEach(([key,t])=>{
@@ -813,118 +766,163 @@ function renderIdeas(){
     grid.appendChild(card);
   });
 }
-function addIdea(type){const input=document.getElementById('idea-'+type),val=input.value.trim();if(!val)return;if(!ideas[type])ideas[type]=[];ideas[type].push(val);save(true);renderIdeas();}
-function removeIdea(type,idx){ideas[type].splice(idx,1);save(true);renderIdeas();}
+function addIdea(type){const input=document.getElementById('idea-'+type),val=input.value.trim();if(!val)return;if(!ideas[type])ideas[type]=[];ideas[type].push(val);save();renderIdeas();}
+function removeIdea(type,idx){ideas[type].splice(idx,1);save();renderIdeas();}
 
-// ── TOAST ──────────────────────────────────────────────────────────────
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-// ── NOTES ──────────────────────────────────────────────────────────────
 document.getElementById('notes-area').value=notes;
-document.getElementById('notes-area').addEventListener('input',e=>{
-  // FIX: debounce — was writing to localStorage on every keystroke
-  clearTimeout(window._notesTimer);
-  window._notesTimer=setTimeout(()=>localStorage.setItem('bella_notes_v3',e.target.value),400);
-});
+document.getElementById('notes-area').addEventListener('input',e=>{localStorage.setItem('bella_notes_v3',e.target.value);});
 
-// ── COLOR PALETTE ──────────────────────────────────────────────────────
-const SLOT_COLORS=[
-  {hex:'#fdf3ef',border:'#D85A30',text:'#712B13'},{hex:'#f2f0fe',border:'#7F77DD',text:'#3C3489'},
-  {hex:'#f0f7e6',border:'#639922',text:'#27500A'},{hex:'#e8f8f2',border:'#1D9E75',text:'#085041'},
-  {hex:'#fdf6e8',border:'#BA7517',text:'#633806'},{hex:'#eaf3fc',border:'#378ADD',text:'#0C447C'},
-  {hex:'#fdf0f5',border:'#D4537E',text:'#72243E'},{hex:'#fdf5ea',border:'#EF9F27',text:'#633806'},
-  {hex:'#f4f3f0',border:'#888780',text:'#444441'},{hex:'#f2f9e8',border:'#97C459',text:'#3B6D11'},
-  {hex:'#fff8e1',border:'#c9a84c',text:'#7a5500'},{hex:'#fce4ec',border:'#e91e63',text:'#880e4f'},
-  {hex:'#e3f2fd',border:'#1976d2',text:'#0d47a1'},{hex:'#f3e5f5',border:'#7b1fa2',text:'#4a148c'},
-  {hex:'#e8f5e9',border:'#388e3c',text:'#1b5e20'},{hex:'#fff3e0',border:'#f57c00',text:'#e65100'},
+// ── COLOR PALETTE ─────────────────────────────────────────────────────
+const SLOT_COLORS = [
+  {hex:'#fdf3ef',border:'#D85A30',text:'#712B13'},
+  {hex:'#f2f0fe',border:'#7F77DD',text:'#3C3489'},
+  {hex:'#f0f7e6',border:'#639922',text:'#27500A'},
+  {hex:'#e8f8f2',border:'#1D9E75',text:'#085041'},
+  {hex:'#fdf6e8',border:'#BA7517',text:'#633806'},
+  {hex:'#eaf3fc',border:'#378ADD',text:'#0C447C'},
+  {hex:'#fdf0f5',border:'#D4537E',text:'#72243E'},
+  {hex:'#fdf5ea',border:'#EF9F27',text:'#633806'},
+  {hex:'#f4f3f0',border:'#888780',text:'#444441'},
+  {hex:'#f2f9e8',border:'#97C459',text:'#3B6D11'},
+  {hex:'#fff8e1',border:'#c9a84c',text:'#7a5500'},
+  {hex:'#fce4ec',border:'#e91e63',text:'#880e4f'},
+  {hex:'#e3f2fd',border:'#1976d2',text:'#0d47a1'},
+  {hex:'#f3e5f5',border:'#7b1fa2',text:'#4a148c'},
+  {hex:'#e8f5e9',border:'#388e3c',text:'#1b5e20'},
+  {hex:'#fff3e0',border:'#f57c00',text:'#e65100'},
 ];
-let colorPickerTarget=null;
-function openColorPicker(context,evt,di,si){
-  colorPickerTarget=(context==='saf')?{context:'saf'}:{context:'slot',di,si};
-  const pop=document.getElementById('color-picker-pop');
-  pop.innerHTML='';
-  SLOT_COLORS.forEach(c=>{
-    const sw=document.createElement('div');sw.className='cp-swatch';
-    sw.style.background=c.hex;sw.style.border=`1.5px solid ${c.border}`;
-    sw.onclick=()=>applyColor(c);pop.appendChild(sw);
+
+let colorPickerTarget = null; // {context:'saf'} or {context:'slot', di, si}
+
+function openColorPicker(context, evt, di, si) {
+  colorPickerTarget = (context==='saf') ? {context:'saf'} : {context:'slot',di,si};
+  const pop = document.getElementById('color-picker-pop');
+  pop.innerHTML = '';
+  SLOT_COLORS.forEach(c => {
+    const sw = document.createElement('div');
+    sw.className = 'cp-swatch';
+    sw.style.background = c.hex;
+    sw.style.border = `1.5px solid ${c.border}`;
+    sw.onclick = () => applyColor(c);
+    pop.appendChild(sw);
   });
-  const rect=evt.target.getBoundingClientRect();
-  pop.style.top=(rect.bottom+4)+'px';
-  pop.style.left=Math.min(rect.left,window.innerWidth-160)+'px';
-  pop.classList.add('open');evt.stopPropagation();
+  const rect = evt.target.getBoundingClientRect();
+  pop.style.top  = (rect.bottom + 4) + 'px';
+  pop.style.left = Math.min(rect.left, window.innerWidth - 160) + 'px';
+  pop.classList.add('open');
+  evt.stopPropagation();
 }
-function applyColor(c){
-  const pop=document.getElementById('color-picker-pop');pop.classList.remove('open');
-  if(!colorPickerTarget)return;
-  if(colorPickerTarget.context==='saf'){
-    const prev=document.getElementById('saf-color-preview');
-    prev.style.background=c.hex;prev.dataset.hex=c.hex;prev.dataset.border=c.border;prev.dataset.text=c.text;
-  }else{
-    const{di,si}=colorPickerTarget;
-    schedTemplate[di].slots[si]={...schedTemplate[di].slots[si],color:c};
-    saveQueueData();renderSchedPanel();
+
+function applyColor(c) {
+  const pop = document.getElementById('color-picker-pop');
+  pop.classList.remove('open');
+  if(!colorPickerTarget) return;
+  if(colorPickerTarget.context === 'saf') {
+    document.getElementById('saf-color-preview').style.background = c.hex;
+    document.getElementById('saf-color-preview').dataset.hex = c.hex;
+    document.getElementById('saf-color-preview').dataset.border = c.border;
+    document.getElementById('saf-color-preview').dataset.text = c.text;
+  } else {
+    const {di, si} = colorPickerTarget;
+    schedTemplate[di].slots[si] = {...schedTemplate[di].slots[si], color: c};
+    saveQueueData(); renderSchedPanel();
   }
-  colorPickerTarget=null;
+  colorPickerTarget = null;
 }
-document.addEventListener('click',e=>{
-  const pop=document.getElementById('color-picker-pop');
-  if(pop&&!pop.contains(e.target))pop.classList.remove('open');
+
+document.addEventListener('click', e => {
+  const pop = document.getElementById('color-picker-pop');
+  if(pop && !pop.contains(e.target)) pop.classList.remove('open');
 });
 
-// ── QUEUE TAB ──────────────────────────────────────────────────────────
-const DEFAULT_SCHED_TEMPLATE=[
-  {day:'Mon',slots:[{type:'meme'},{type:'gig',indent:true}]},
-  {day:'Tue',slots:[{type:'rook'},{type:'gig',indent:true}]},
-  {day:'Wed',slots:[{type:'tag'},{type:'venue'},{type:'gig',indent:true}]},
-  {day:'Thu',slots:[{type:'quote'},{type:'gig',indent:true}]},
-  {day:'Fri',slots:[{type:'reels'},{type:'debate'}]},
-  {day:'Sat',slots:[{type:'crowd'},{type:'gig',indent:true}]},
-  {day:'Sun',slots:[{type:'imagery'},{type:'social'},{type:'gig',indent:true}]},
+// ── QUEUE TAB ─────────────────────────────────────────────────────────
+const DEFAULT_SCHED_TEMPLATE = [
+  {day:'Mon', slots:[{type:'meme'},{type:'gig',indent:true}]},
+  {day:'Tue', slots:[{type:'rook'},{type:'gig',indent:true}]},
+  {day:'Wed', slots:[{type:'tag'},{type:'venue'},{type:'gig',indent:true}]},
+  {day:'Thu', slots:[{type:'quote'},{type:'gig',indent:true}]},
+  {day:'Fri', slots:[{type:'reels'},{type:'debate'}]},
+  {day:'Sat', slots:[{type:'crowd'},{type:'gig',indent:true}]},
+  {day:'Sun', slots:[{type:'imagery'},{type:'social'},{type:'gig',indent:true}]},
 ];
-function migrateTemplate(tpl){return tpl.map(d=>({day:d.day,slots:(d.slots||[]).map(s=>typeof s==='string'?{type:s}:s)}));}
-let schedTemplate=migrateTemplate(JSON.parse(localStorage.getItem('bella_sched_tpl')||'null')||JSON.parse(JSON.stringify(DEFAULT_SCHED_TEMPLATE)));
-let queueOrder=JSON.parse(localStorage.getItem('bella_queue_order')||'null');
-function saveQueueData(){
-  localStorage.setItem('bella_sched_tpl',JSON.stringify(schedTemplate));
-  if(queueOrder)localStorage.setItem('bella_queue_order',JSON.stringify(queueOrder));
-  else localStorage.removeItem('bella_queue_order');
+
+// Migrate old string-based template if needed
+function migrateTemplate(tpl) {
+  return tpl.map(dayBlock => ({
+    day: dayBlock.day,
+    slots: (dayBlock.slots||[]).map(s => typeof s === 'string' ? {type:s} : s)
+  }));
 }
 
-// ── ADD SLOT FORM ──────────────────────────────────────────────────────
-function toggleAddSlotForm(){
-  const form=document.getElementById('sched-add-form');form.classList.toggle('open');
+let schedTemplate = migrateTemplate(JSON.parse(localStorage.getItem('bella_sched_tpl') || 'null') || JSON.parse(JSON.stringify(DEFAULT_SCHED_TEMPLATE)));
+let queueOrder    = JSON.parse(localStorage.getItem('bella_queue_order') || 'null');
+
+function saveQueueData() {
+  localStorage.setItem('bella_sched_tpl', JSON.stringify(schedTemplate));
+  if(queueOrder) localStorage.setItem('bella_queue_order', JSON.stringify(queueOrder));
+  else           localStorage.removeItem('bella_queue_order');
+}
+
+// ── ADD SLOT FORM ─────────────────────────────────────────────────────
+function toggleAddSlotForm() {
+  const form = document.getElementById('sched-add-form');
+  form.classList.toggle('open');
+  // reset custom field visibility
   document.getElementById('saf-custom').style.display='none';
-  document.getElementById('saf-type').onchange=function(){document.getElementById('saf-custom').style.display=this.value==='custom'?'':'none';};
-}
-function confirmAddSlot(){
-  const day=document.getElementById('saf-day').value;
-  const typeVal=document.getElementById('saf-type').value;
-  const customLabel=document.getElementById('saf-custom').value.trim();
-  const indent=document.getElementById('saf-indent').checked;
-  const colorPrev=document.getElementById('saf-color-preview');
-  const color=colorPrev.dataset.hex?{hex:colorPrev.dataset.hex,border:colorPrev.dataset.border,text:colorPrev.dataset.text}:null;
-  const slotType=typeVal==='custom'?(customLabel||'custom'):typeVal;
-  const dayBlock=schedTemplate.find(d=>d.day===day);if(!dayBlock)return;
-  dayBlock.slots.push({type:slotType,...(indent?{indent:true}:{}),...(color?{color}:{})});
-  queueOrder=null;saveQueueData();renderSchedPanel();renderQueueWeeks();toggleAddSlotForm();showToast('Slot added');
+  document.getElementById('saf-type').onchange = function(){
+    document.getElementById('saf-custom').style.display = this.value==='custom'?'':'none';
+  };
 }
 
-// ── AUTO QUEUE BUILD ───────────────────────────────────────────────────
-function getSlotType(s){return typeof s==='string'?s:s.type;}
-function buildAutoQueue(){
-  const fullPool={};Object.keys(TYPES).forEach(t=>{fullPool[t]=[];});
-  posts.forEach(p=>{if(fullPool[p.type])fullPool[p.type].push(p.id);else fullPool[p.type]=[p.id];});
-  if(!posts.length)return[];
-  const result=[],usedIds=new Set(),cursors={};
-  const allTypes=new Set([...Object.keys(TYPES),...schedTemplate.flatMap(d=>d.slots.map(getSlotType))]);
-  allTypes.forEach(t=>{cursors[t]=0;if(!fullPool[t])fullPool[t]=[];});
-  let placed=0,week=0;
-  while(placed<posts.length&&week<8){
+function confirmAddSlot() {
+  const day  = document.getElementById('saf-day').value;
+  const typeVal = document.getElementById('saf-type').value;
+  const customLabel = document.getElementById('saf-custom').value.trim();
+  const indent = document.getElementById('saf-indent').checked;
+  const colorPrev = document.getElementById('saf-color-preview');
+  const color = colorPrev.dataset.hex ? {hex:colorPrev.dataset.hex, border:colorPrev.dataset.border, text:colorPrev.dataset.text} : null;
+
+  const slotType = typeVal==='custom' ? (customLabel||'custom') : typeVal;
+  const dayBlock = schedTemplate.find(d=>d.day===day);
+  if(!dayBlock) return;
+  dayBlock.slots.push({type:slotType, ...(indent?{indent:true}:{}), ...(color?{color}:{})});
+  queueOrder = null;
+  saveQueueData();
+  renderSchedPanel();
+  renderQueueWeeks();
+  toggleAddSlotForm();
+  showToast('Slot added');
+}
+
+// ── BUILD AUTO QUEUE ──────────────────────────────────────────────────
+function getSlotType(s) { return typeof s==='string'?s:s.type; }
+
+function buildAutoQueue() {
+  const fullPool = {};
+  Object.keys(TYPES).forEach(t=>{fullPool[t]=[];});
+  posts.forEach(p=>{ if(fullPool[p.type]) fullPool[p.type].push(p.id); else fullPool[p.type]=[p.id]; });
+
+  const totalPosts = posts.length;
+  if(totalPosts===0) return [];
+  const result=[], usedIds=new Set();
+  const cursors={};
+  const allTypes = new Set([...Object.keys(TYPES),...schedTemplate.flatMap(d=>d.slots.map(getSlotType))]);
+  allTypes.forEach(t=>{cursors[t]=0; if(!fullPool[t])fullPool[t]=[];});
+
+  let placed=0, week=0;
+  while(placed<totalPosts && week<8) {
     schedTemplate.forEach(dayBlock=>{
       dayBlock.slots.forEach(slotDef=>{
-        const slotType=getSlotType(slotDef),pool=fullPool[slotType]||[];
+        const slotType=getSlotType(slotDef);
+        const pool=fullPool[slotType]||[];
         let pid=null;
-        while(cursors[slotType]<pool.length){const c=pool[cursors[slotType]];if(!usedIds.has(c)){pid=c;cursors[slotType]++;break;}cursors[slotType]++;}
+        while(cursors[slotType]<pool.length){
+          const c=pool[cursors[slotType]];
+          if(!usedIds.has(c)){pid=c;cursors[slotType]++;break;}
+          cursors[slotType]++;
+        }
         if(pid){usedIds.add(pid);placed++;}
         result.push({type:slotType,slotDef,postId:pid,week,dayLabel:dayBlock.day});
       });
@@ -933,79 +931,132 @@ function buildAutoQueue(){
   }
   return result;
 }
+
 function getQueueItems(){return queueOrder||buildAutoQueue();}
 
-// ── SCHEDULE PANEL ─────────────────────────────────────────────────────
+// ── RENDER SCHEDULE PANEL ─────────────────────────────────────────────
 let schedDragSrc=null;
+
 function renderSchedPanel(){
-  const list=document.getElementById('sched-day-list');list.innerHTML='';
+  const list=document.getElementById('sched-day-list');
+  list.innerHTML='';
   schedTemplate.forEach((dayBlock,di)=>{
-    const dayEl=document.createElement('div');dayEl.className='sched-day-block';
-    const lbl=document.createElement('div');lbl.className='sched-day-label';lbl.textContent=dayBlock.day;
+    const dayEl=document.createElement('div'); dayEl.className='sched-day-block';
+    const lbl=document.createElement('div'); lbl.className='sched-day-label'; lbl.textContent=dayBlock.day;
     dayEl.appendChild(lbl);
     dayBlock.slots.forEach((slotDef,si)=>{
-      const slotType=getSlotType(slotDef),indent=slotDef.indent||false,color=slotDef.color||null;
+      const slotType=getSlotType(slotDef);
+      const indent=slotDef.indent||false;
+      const color=slotDef.color||null;
       const row=document.createElement('div');
       row.className='sched-slot-row'+(indent?' indented':'');
-      row.draggable=true;row.dataset.di=di;row.dataset.si=si;
+      row.draggable=true; row.dataset.di=di; row.dataset.si=si;
+      // color override
       if(color){row.style.background=color.hex;row.style.borderColor=color.border;}
       const typeLabel=TYPES[slotType]?.label||slotType;
-      row.innerHTML=`<span class="sched-slot-drag">⠿</span><span class="sched-slot-badge" style="${color?`background:${color.hex};color:${color.text};border-color:${color.border};`:''}">${typeLabel}</span><button class="sched-slot-act" title="Toggle indent" onclick="toggleSlotIndent(${di},${si})">${indent?'←':'→'}</button><div class="sched-color-dot" style="background:${color?color.hex:'var(--bg3)'};border-color:${color?color.border:'rgba(0,0,0,.2)'};" onclick="openColorPicker('slot',event,${di},${si})" title="Change color"></div><button class="sched-slot-act" title="Remove slot" onclick="removeSchedSlot(${di},${si})" style="color:#c0392b;">×</button>`;
+      const dotBg=color?color.hex:(TYPES[slotType]?getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim():'#f4f3f0');
+      const dotBorder=color?color.border:'rgba(0,0,0,.2)';
+      row.innerHTML=`
+        <span class="sched-slot-drag">⠿</span>
+        <span class="sched-slot-badge" style="${color?`background:${color.hex};color:${color.text};border-color:${color.border};`:''}${TYPES[slotType]?``:''}">${typeLabel}</span>
+        <button class="sched-slot-act" title="Toggle indent" onclick="toggleSlotIndent(${di},${si})">${indent?'←':'→'}</button>
+        <div class="sched-color-dot" style="background:${color?color.hex:'var(--bg3)'};border-color:${color?color.border:'rgba(0,0,0,.2)'};" onclick="openColorPicker('slot',event,${di},${si})" title="Change color"></div>
+        <button class="sched-slot-act" title="Remove slot" onclick="removeSchedSlot(${di},${si})" style="color:#c0392b;">×</button>
+      `;
+      // drag events
       row.addEventListener('dragstart',e=>{schedDragSrc={di,si};e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','sched');});
       row.addEventListener('dragover',e=>{e.preventDefault();row.style.outline='1.5px dashed var(--gold)';});
       row.addEventListener('dragleave',()=>{row.style.outline='';});
       row.addEventListener('drop',e=>{
         e.preventDefault();row.style.outline='';
         if(!schedDragSrc)return;
-        const src=schedDragSrc;schedDragSrc=null;
+        const src=schedDragSrc; schedDragSrc=null;
         if(src.di===di&&src.si===si)return;
         const srcSlot=schedTemplate[src.di].slots.splice(src.si,1)[0];
         const tdi=parseInt(row.dataset.di),tsi=parseInt(row.dataset.si);
         schedTemplate[tdi].slots.splice(tsi,0,srcSlot);
-        queueOrder=null;saveQueueData();renderSchedPanel();renderQueueWeeks();
+        queueOrder=null; saveQueueData(); renderSchedPanel(); renderQueueWeeks();
       });
       dayEl.appendChild(row);
     });
     list.appendChild(dayEl);
   });
 }
-function toggleSlotIndent(di,si){const s=schedTemplate[di].slots[si];schedTemplate[di].slots[si]={...s,indent:!s.indent};saveQueueData();renderSchedPanel();}
-function removeSchedSlot(di,si){schedTemplate[di].slots.splice(si,1);queueOrder=null;saveQueueData();renderSchedPanel();renderQueueWeeks();}
 
-// ── QUEUE WEEKS ────────────────────────────────────────────────────────
+function toggleSlotIndent(di,si){
+  const s=schedTemplate[di].slots[si];
+  schedTemplate[di].slots[si]={...s,indent:!s.indent};
+  saveQueueData(); renderSchedPanel();
+}
+function removeSchedSlot(di,si){
+  schedTemplate[di].slots.splice(si,1);
+  queueOrder=null; saveQueueData(); renderSchedPanel(); renderQueueWeeks();
+}
+
+// ── RENDER QUEUE WEEKS ────────────────────────────────────────────────
 const CAROUSEL_SVG=`<svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><rect x="7" y="2" width="15" height="14" rx="2" opacity=".5"/></svg>`;
 let qDragIdx=null;
+
 function renderQueueWeeks(){
-  const container=document.getElementById('queue-weeks');container.innerHTML='';
+  const container=document.getElementById('queue-weeks');
+  container.innerHTML='';
   const items=getQueueItems();
   if(!items.length){container.innerHTML='<div class="empty">Add posts to your library to see the queue.</div>';return;}
+
   const weeks=[];
-  items.forEach(item=>{if(!weeks[item.week])weeks[item.week]={};if(!weeks[item.week][item.dayLabel])weeks[item.week][item.dayLabel]=[];weeks[item.week][item.dayLabel].push(item);});
+  items.forEach(item=>{
+    if(!weeks[item.week])weeks[item.week]={};
+    if(!weeks[item.week][item.dayLabel])weeks[item.week][item.dayLabel]=[];
+    weeks[item.week][item.dayLabel].push(item);
+  });
+
   weeks.forEach((weekDays,wi)=>{
     if(!weekDays)return;
     const wb=document.createElement('div');wb.className='qweek-block';
-    const wl=document.createElement('div');wl.className='qweek-label';wl.textContent=wi===0?'Week 1':`Week ${wi+1}`;wb.appendChild(wl);
+    const wl=document.createElement('div');wl.className='qweek-label';wl.textContent=wi===0?'Week 1':`Week ${wi+1}`;
+    wb.appendChild(wl);
     schedTemplate.forEach(dayBlock=>{
-      const dayItems=weekDays[dayBlock.day];if(!dayItems||!dayItems.length)return;
+      const dayItems=weekDays[dayBlock.day];
+      if(!dayItems||!dayItems.length)return;
       const dayEl=document.createElement('div');dayEl.className='qday-block';
-      const dl=document.createElement('div');dl.className='qday-label';dl.textContent=dayBlock.day;dayEl.appendChild(dl);
+      const dl=document.createElement('div');dl.className='qday-label';dl.textContent=dayBlock.day;
+      dayEl.appendChild(dl);
       const sl=document.createElement('div');sl.className='qslot-list';
       dayItems.forEach(item=>{
         const globalIdx=items.indexOf(item);
         const post=item.postId?posts.find(p=>p.id===item.postId):null;
-        const slotDef=item.slotDef||{type:item.type},color=slotDef.color||null,indent=slotDef.indent||false;
+        const slotDef=item.slotDef||{type:item.type};
+        const color=slotDef.color||null;
+        const indent=slotDef.indent||false;
         const tc=TYPES[item.type]?.cls||'type-social';
         const card=document.createElement('div');
-        card.className='qslot-card'+(!post?' is-placeholder':'');card.dataset.idx=globalIdx;
+        card.className='qslot-card'+(!post?' is-placeholder':'');
+        card.dataset.idx=globalIdx;
         if(indent)card.style.marginLeft='14px';
+
         const isMulti=post&&(post.pages||1)>1;
         let thumbEl;
-        if(post?.img)thumbEl=`<div class="qslot-thumb-wrap"><img class="qslot-thumb" src="${post.img}" alt=""/>${isMulti?`<div class="slot-carousel">${CAROUSEL_SVG}</div><div class="slot-pages-badge">${post.pages}</div>`:''}</div>`;
-        else if(post)thumbEl=`<div class="qslot-thumb-wrap"><div class="qslot-thumb" style="background:var(--bg3);border-radius:4px;"></div>${isMulti?`<div class="slot-pages-badge">${post.pages}</div>`:''}</div>`;
-        else thumbEl=`<div class="qslot-thumb-ph">◻</div>`;
+        if(post?.img){
+          thumbEl=`<div class="qslot-thumb-wrap"><img class="qslot-thumb" src="${post.img}" alt=""/>${isMulti?`<div class="slot-carousel">${CAROUSEL_SVG}</div><div class="slot-pages-badge">${post.pages}</div>`:''}</div>`;
+        } else if(post){
+          thumbEl=`<div class="qslot-thumb-wrap"><div class="qslot-thumb" style="background:var(--bg3);border-radius:4px;"></div>${isMulti?`<div class="slot-pages-badge">${post.pages}</div>`:''}</div>`;
+        } else {
+          thumbEl=`<div class="qslot-thumb-ph">◻</div>`;
+        }
+
         const badgeStyle=color?`background:${color.hex};color:${color.text};border-color:${color.border};`:'';
         const titleEl=post?`<div class="qslot-title">${post.title}${isMulti?`<span style="font-size:9px;color:var(--text3);margin-left:4px;font-family:var(--cinzel);">${post.pages} slides</span>`:''}</div>`:`<div class="qslot-title ph">No ${TYPES[item.type]?.label||item.type} uploaded yet</div>`;
-        card.innerHTML=`${thumbEl}<div class="qslot-info"><span class="qslot-badge ${color?'':tc}" style="${badgeStyle}">${TYPES[item.type]?.label||item.type}</span>${titleEl}</div>${post?'<span class="qslot-drag-handle">⠿</span>':''}${post?`<button class="qslot-rm" title="Remove from queue" onclick="removeFromQueue(${globalIdx})">×</button>`:''}`;
+
+        card.innerHTML=`
+          ${thumbEl}
+          <div class="qslot-info">
+            <span class="qslot-badge ${color?'':tc}" style="${badgeStyle}">${TYPES[item.type]?.label||item.type}</span>
+            ${titleEl}
+          </div>
+          ${post?'<span class="qslot-drag-handle">⠿</span>':''}
+          ${post?`<button class="qslot-rm" title="Remove from queue" onclick="removeFromQueue(${globalIdx})">×</button>`:''}
+        `;
+
         if(post){
           card.draggable=true;
           card.addEventListener('dragstart',e=>{qDragIdx=globalIdx;e.dataTransfer.setData('text/plain','qslot:'+globalIdx);e.dataTransfer.effectAllowed='move';});
@@ -1013,10 +1064,13 @@ function renderQueueWeeks(){
           card.addEventListener('dragleave',()=>card.classList.remove('drag-over-q'));
           card.addEventListener('drop',e=>{
             e.preventDefault();card.classList.remove('drag-over-q');
-            const data=e.dataTransfer.getData('text/plain');if(!data.startsWith('qslot:'))return;
-            const fromIdx=parseInt(data.split(':')[1]);if(fromIdx===globalIdx)return;
+            const data=e.dataTransfer.getData('text/plain');
+            if(!data.startsWith('qslot:'))return;
+            const fromIdx=parseInt(data.split(':')[1]);
+            if(fromIdx===globalIdx)return;
             if(!queueOrder)queueOrder=buildAutoQueue();
-            const[moved]=queueOrder.splice(fromIdx,1);queueOrder.splice(globalIdx,0,moved);
+            const[moved]=queueOrder.splice(fromIdx,1);
+            queueOrder.splice(globalIdx,0,moved);
             saveQueueData();renderQueueWeeks();
           });
         }
@@ -1027,8 +1081,13 @@ function renderQueueWeeks(){
     container.appendChild(wb);
   });
 }
-function removeFromQueue(idx){if(!queueOrder)queueOrder=buildAutoQueue();queueOrder.splice(idx,1);saveQueueData();renderQueueWeeks();}
+
+function removeFromQueue(idx){
+  if(!queueOrder)queueOrder=buildAutoQueue();
+  queueOrder.splice(idx,1);saveQueueData();renderQueueWeeks();
+}
 function resetQueue(){queueOrder=null;saveQueueData();renderQueueWeeks();showToast('Queue reset to auto order');}
+
 function pushQueueToCalendar(){
   const items=getQueueItems().filter(i=>i.postId);
   if(!items.length){showToast('No posts in queue to push');return;}
@@ -1038,9 +1097,11 @@ function pushQueueToCalendar(){
   let pushed=0;
   for(let w=0;w<8;w++){
     for(const dayBlock of schedTemplate){
-      const dayKey=DAYS.find(d=>d.label===dayBlock.day)?.key;if(!dayKey)continue;
+      const dayKey=DAYS.find(d=>d.label===dayBlock.day)?.key;
+      if(!dayKey)continue;
       dayBlock.slots.forEach((slotDef,si)=>{
-        const slotType=getSlotType(slotDef),slotId=`w${w}-${dayKey}-${slotType}-${si}`;
+        const slotType=getSlotType(slotDef);
+        const slotId=`w${w}-${dayKey}-${slotType}-${si}`;
         if(schedule[slotId])return;
         const pool=itemsByType[slotType];
         if(pool&&cursors[slotType]<pool.length){
@@ -1051,11 +1112,12 @@ function pushQueueToCalendar(){
       });
     }
   }
-  save(true);refreshBothCalendars();renderLibrary();
+  save();refreshBothCalendars();renderLibrary();
   showToast(pushed?`${pushed} post${pushed>1?'s':''} pushed to calendar!`:'All slots already filled');
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+
 renderCalendar();
 renderLibrary();
 </script>
