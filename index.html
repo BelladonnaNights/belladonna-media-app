@@ -270,6 +270,1310 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .qslot-rm:hover{color:var(--text);background:var(--bg3);}
 
 @media(max-width:600px){.nav-brand{font-size:10px;}.post-card{width:140px;}.ig-grid{max-width:100%;}.sched-panel{width:160px;}}
+
+/* EDIT POST MODAL */
+.edit-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:700;align-items:center;justify-content:center;padding:1rem;}
+.edit-modal-bg.show{display:flex;}
+.edit-modal{background:var(--bg);border-radius:var(--radius-lg);border:.5px solid var(--border2);width:100%;max-width:380px;overflow:hidden;}
+.edit-modal-header{padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid var(--border);}
+.edit-modal-title{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.edit-modal-close{background:none;border:.5px solid var(--border2);color:var(--text2);border-radius:var(--radius);cursor:pointer;font-size:14px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
+.edit-modal-close:hover{background:var(--bg3);color:var(--text);}
+.edit-modal-body{padding:1.25rem;display:flex;flex-direction:column;gap:10px;}
+.edit-field{display:flex;flex-direction:column;gap:4px;}
+.edit-field label{font-family:var(--cinzel);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);}
+.edit-field input,.edit-field select{padding:7px 10px;font-size:13px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);width:100%;}
+.edit-field input:focus,.edit-field select:focus{outline:none;border-color:var(--gold-border2);}
+.edit-modal-footer{padding:.9rem 1.25rem;border-top:.5px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+.edit-save-btn{padding:7px 18px;font-family:var(--cinzel);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:var(--text);color:var(--bg);border:none;border-radius:var(--radius);cursor:pointer;}
+.edit-save-btn:hover{opacity:.82;}
+.edit-cancel-btn{padding:7px 14px;font-family:var(--cinzel);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:none;border:.5px solid var(--border2);color:var(--text2);border-radius:var(--radius);cursor:pointer;}
+.edit-cancel-btn:hover{background:var(--bg3);color:var(--text);}
+.post-card-edit{position:absolute;bottom:4px;right:28px;background:rgba(255,255,255,.9);border:.5px solid var(--border2);color:var(--text2);cursor:pointer;font-size:10px;padding:2px 6px;border-radius:4px;display:none;font-family:var(--cinzel);letter-spacing:.04em;line-height:1.6;}
+.post-card:hover .post-card-edit{display:block;}
+.post-card-edit:hover{background:#fff;color:var(--text);}
+
+/* slides strip in edit modal */
+.slide-thumb-wrap{position:relative;flex-shrink:0;}
+.slide-thumb{width:52px;height:69px;object-fit:cover;border-radius:var(--radius);border:.5px solid var(--border2);display:block;}
+.slide-thumb-ph{width:52px;height:69px;border-radius:var(--radius);border:.5px dashed var(--border2);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text3);}
+.slide-rm{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--text);color:var(--bg);border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;line-height:1;}
+.slide-cover-label{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:8px;font-family:var(--cinzel);letter-spacing:.04em;background:rgba(0,0,0,.5);color:#fff;border-radius:0 0 var(--radius) var(--radius);padding:1px 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">Belladonna</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('planner',this)">Planner</button>
+    <button class="nav-tab" onclick="showTab('queue',this)">Queue</button>
+    <button class="nav-tab" onclick="showTab('autosched',this)">Auto-Schedule</button>
+    <button class="nav-tab" onclick="showTab('ig',this)">IG Preview</button>
+    <button class="nav-tab" onclick="showTab('categories',this)">Post Types</button>
+    <button class="nav-tab" onclick="showTab('typenotes',this)">Type Notes</button>
+    <button class="nav-tab" onclick="showTab('ideas',this)">Ideas</button>
+    <button class="nav-tab" onclick="showTab('notes',this)">Notes</button>
+  </div>
+</nav>
+
+<div id="tab-planner" class="page active">
+  <div class="cal-rail-wrap">
+    <div class="cal-rail-header">
+      <div class="cal-rail-title">Weekly Schedule</div>
+      <div class="cal-rail-hint">Drag posts up from library below · double-click a slot to clear</div>
+    </div>
+    <div class="cal-scroll" id="cal-scroll"></div>
+  </div>
+  <div class="library-panel">
+    <div class="library-panel-header">
+      <div class="lib-panel-title">Post Library</div>
+      <div class="filter-bar" id="filter-bar"></div>
+    </div>
+    <div class="add-post-inline">
+      <input id="new-title" placeholder="Post title or caption..." onkeydown="if(event.key==='Enter')addPost()"/>
+      <select id="new-type">
+        <option value="meme">Meme</option><option value="rook">Rook Post</option>
+        <option value="tag">Tag</option><option value="venue">Venue Love / Repost</option>
+        <option value="quote">Quote / Bar Truth</option><option value="reels">Reels &amp; Lists</option>
+        <option value="debate">Rook Debate</option><option value="crowd">Crowd &amp; Vibe</option>
+        <option value="imagery">Crow Imagery</option><option value="social">Social Proof</option>
+        <option value="gig">Gig Post</option>
+      </select>
+      <input id="new-pages" type="number" min="1" max="99" placeholder="Slides" title="Number of pages/slides" style="width:64px;flex:none;"/>
+      <button class="btn btn-primary" onclick="addPost()">+ Add</button>
+    </div>
+    <div class="post-cards-scroll" id="post-cards-scroll"></div>
+  </div>
+</div>
+
+<!-- ══ QUEUE TAB ══ -->
+<div id="tab-queue" class="page">
+  <div class="queue-tab-layout">
+
+    <!-- Left: editable schedule template -->
+    <div class="sched-panel">
+      <div class="sched-panel-header">
+        <div class="sched-panel-title">Schedule Template</div>
+        <button class="sched-add-btn" onclick="toggleAddSlotForm()" title="Add slot">+</button>
+      </div>
+      <div class="sched-add-form" id="sched-add-form">
+        <select id="saf-day">
+          <option value="Mon">Monday</option><option value="Tue">Tuesday</option>
+          <option value="Wed">Wednesday</option><option value="Thu">Thursday</option>
+          <option value="Fri">Friday</option><option value="Sat">Saturday</option>
+          <option value="Sun">Sunday</option>
+        </select>
+        <select id="saf-type">
+          <option value="meme">Meme</option><option value="rook">Rook Post</option>
+          <option value="tag">Tag</option><option value="venue">Venue Love / Repost</option>
+          <option value="quote">Quote / Bar Truth</option><option value="reels">Reels &amp; Lists</option>
+          <option value="debate">Rook Debate</option><option value="crowd">Crowd &amp; Vibe</option>
+          <option value="imagery">Crow Imagery</option><option value="social">Social Proof</option>
+          <option value="gig">Gig Post</option><option value="custom">Custom label...</option>
+        </select>
+        <input id="saf-custom" placeholder="Custom label name..." style="display:none"/>
+        <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text2);font-family:var(--cinzel);letter-spacing:.05em;">
+          <span>COLOR</span>
+          <div id="saf-color-preview" style="width:16px;height:16px;border-radius:50%;background:#888780;border:.5px solid rgba(0,0,0,.15);cursor:pointer;" onclick="openColorPicker('saf',event)"></div>
+          <input type="checkbox" id="saf-indent"/> <label for="saf-indent" style="cursor:pointer;">Indent</label>
+        </div>
+        <div class="sched-add-form-row">
+          <button class="sched-add-confirm" onclick="confirmAddSlot()">Add</button>
+          <button class="sched-add-cancel" onclick="toggleAddSlotForm()">Cancel</button>
+        </div>
+      </div>
+      <div class="sched-day-list" id="sched-day-list"></div>
+    </div>
+
+    <!-- Right: auto-populated queue -->
+    <div class="queue-main">
+      <div class="queue-main-header">
+        <div class="queue-main-title">Post Queue</div>
+        <div class="queue-actions">
+          <button class="push-cal-btn-ghost" onclick="resetQueue()">Reset Queue</button>
+          <button class="push-cal-btn" onclick="pushQueueToCalendar()">Push to Calendar →</button>
+        </div>
+      </div>
+      <div id="queue-weeks"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="tab-autosched" class="page">
+  <div class="autosched-layout">
+    <div class="cal-rail-wrap">
+      <div class="cal-rail-header">
+        <div class="cal-rail-title">Weekly Schedule</div>
+        <div class="cal-rail-hint">Auto-fill posts into empty slots · double-click a slot to clear</div>
+      </div>
+      <div class="cal-scroll" id="cal-scroll-auto"></div>
+    </div>
+    <div class="autosched-body">
+      <div class="queue-panel">
+        <h3>Auto-Fill Queue</h3>
+        <div class="sub">Unscheduled posts ready to fill empty slots, matched by type.</div>
+        <div class="queue-type-list" id="queue-type-list"></div>
+        <button class="autofill-btn" onclick="autoFill()">Auto-Fill Empty Slots</button>
+        <button class="autofill-clear-btn" onclick="clearAllSlots()">Clear All Slots</button>
+        <div class="queue-unscheduled">
+          <h4>Unscheduled posts</h4>
+          <div id="queue-post-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-ig" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Instagram Preview</div>
+      <div class="page-sub">Your scheduled posts in 3:4 portrait format, as they'll appear on your grid.</div>
+      <div class="ig-wrap">
+        <div><div class="section-label" style="margin-bottom:8px;">Grid (3 columns · 3:4)</div><div class="ig-grid" id="ig-grid"></div></div>
+        <div class="ig-order-list"><div class="section-label" style="margin-bottom:8px;">Posting order</div><div id="ig-order"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-categories" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Types</div>
+      <div class="page-sub">What each format is for, why it works, and when to use it.</div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-typenotes" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Type Notes</div>
+      <div class="page-sub">Strategy notes specific to each post type. Click "Pop out" to expand any note full-screen. Auto-saves as you type.</div>
+      <div class="type-notes-grid" id="type-notes-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-ideas" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Ideas</div>
+      <div class="page-sub">Capture ideas by category before you sit down to create. Click an idea to remove it.</div>
+      <div class="ideas-grid" id="ideas-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-notes" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Notes</div>
+      <div class="page-sub">Hashtag sets, brand voice reminders, collab ideas, strategy thoughts.</div>
+      <div class="card">
+        <textarea class="notes-area" id="notes-area" placeholder="Start writing..."></textarea>
+        <div class="notes-hint">Auto-saves as you type</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" class="img-upload-input" id="img-upload-input" accept="image/*" multiple/>
+
+<div class="popout-overlay" id="popout-overlay" onclick="closePopout(event)">
+  <div class="popout-box">
+    <div class="popout-header">
+      <div class="popout-title" id="popout-title"></div>
+      <button class="popout-close" onclick="closePopoutBtn()">×</button>
+    </div>
+    <div class="popout-body">
+      <textarea class="popout-textarea" id="popout-textarea" placeholder="Notes..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- edit post modal -->
+<div class="edit-modal-bg" id="edit-modal-bg" onclick="closeEditModal(event)">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <div class="edit-modal-title">Edit Post</div>
+      <button class="edit-modal-close" onclick="closeEditModalBtn()">×</button>
+    </div>
+    <div class="edit-modal-body">
+      <div class="edit-field">
+        <label>Title / Caption</label>
+        <input id="edit-title" type="text" placeholder="Post title..."/>
+      </div>
+      <div class="edit-field">
+        <label>Post Type</label>
+        <select id="edit-type">
+          <option value="meme">Meme</option>
+          <option value="rook">Rook Post</option>
+          <option value="tag">Tag</option>
+          <option value="venue">Venue Love / Repost</option>
+          <option value="quote">Quote / Bar Truth</option>
+          <option value="reels">Reels &amp; Lists</option>
+          <option value="debate">Rook Debate</option>
+          <option value="crowd">Crowd &amp; Vibe</option>
+          <option value="imagery">Crow Imagery</option>
+          <option value="social">Social Proof</option>
+          <option value="gig">Gig Post</option>
+        </select>
+      </div>
+      <div class="edit-field">
+        <label>Number of slides / pages</label>
+        <input id="edit-pages" type="number" min="1" max="99" placeholder="1"/>
+      </div>
+      <div class="edit-field">
+        <label>Slide images</label>
+        <div id="edit-slides-strip" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;min-height:20px;"></div>
+        <button type="button" onclick="triggerSlideUpload()" style="padding:5px 12px;font-size:11px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;">+ Add slides</button>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--serif);font-style:italic;">First image is the cover shown on the card. Click × to remove a slide.</div>
+      </div>
+    </div>
+    <div class="edit-modal-footer">
+      <button class="edit-cancel-btn" onclick="closeEditModalBtn()">Cancel</button>
+      <button class="edit-save-btn" onclick="saveEditPost()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- color picker popup -->
+<div class="color-picker-pop" id="color-picker-pop"></div>
+
+<script>
+const WEEKS=8;
+const DAYS=[
+  {key:'mon',label:'Mon',slots:['meme','gig']},
+  {key:'tue',label:'Tue',slots:['rook','gig']},
+  {key:'wed',label:'Wed',slots:['tag','venue','gig']},
+  {key:'thu',label:'Thu',slots:['quote','gig']},
+  {key:'fri',label:'Fri',slots:['reels','debate']},
+  {key:'sat',label:'Sat',slots:['crowd','gig']},
+  {key:'sun',label:'Sun',slots:['imagery','social','gig']},
+];
+const TYPES={
+  meme:{label:'Meme',cls:'type-meme'},rook:{label:'Rook Post',cls:'type-rook'},
+  tag:{label:'Tag',cls:'type-tag'},venue:{label:'Venue Love/Repost',cls:'type-venue'},
+  quote:{label:'Quote / Bar Truth',cls:'type-quote'},reels:{label:'Reels & Lists',cls:'type-reels'},
+  debate:{label:'Rook Debate',cls:'type-debate'},crowd:{label:'Crowd & Vibe',cls:'type-crowd'},
+  imagery:{label:'Crow Imagery',cls:'type-imagery'},social:{label:'Social Proof',cls:'type-social'},
+  gig:{label:'Gig Post',cls:'type-gig'},
+};
+const SLOT_NAMES={meme:'Meme',rook:'Rook Post',tag:'Tag',venue:'Venue Love',quote:'Quote / Bar Truth',reels:'Reels & Lists',debate:'Rook Debate',crowd:'Crowd & Vibe',imagery:'Crow Imagery',social:'Social Proof',gig:'Gig Post'};
+const CAT_INFO={
+  meme:{day:'Monday',desc:'Relatable, shareable humour rooted in musician/performer culture. Builds personality and reach through entertainment. Pairs with a gig post to capture weekend-mood scrollers.'},
+  rook:{day:'Tuesday',desc:'Your brand voice at its strongest. Educational, opinionated, or storytelling content that positions you as the go-to resource — booking tips, industry myths, insider knowledge.'},
+  tag:{day:'Wednesday',desc:'Tag a collaborator, friend, venue, or fellow artist. Creates community and cross-pollination. Mid-week is prime for visibility boosts through shared audiences.'},
+  venue:{day:'Wednesday',desc:"Show appreciation for a venue, promoter, or peer. Reposts strengthen relationships and demonstrate you're embedded in the scene — not just self-promoting."},
+  quote:{day:'Thursday',desc:'A punchy truth, lyric, or insight that resonates with musicians and fans alike. Thursday builds hype before the weekend. High save and share potential.'},
+  reels:{day:'Friday',desc:'Short-form video or ranked/listicle content. Friday = peak discovery. Reels get pushed to non-followers; lists are highly shareable in stories and DMs.'},
+  debate:{day:'Friday',desc:'A spicy or thought-provoking take that invites comments and responses. Drives engagement and signals the algorithm that your content sparks real conversation.'},
+  crowd:{day:'Saturday',desc:'Energy content — live show clips, crowd reactions, behind-the-scenes, venue energy. Amplifies FOMO for weekend events and keeps the buzz going post-show.'},
+  imagery:{day:'Sunday',desc:'Aesthetic, atmospheric, or symbolic imagery tied to your brand identity. Creates visual cohesion on the feed and appeals to the reflective Sunday scroll mood.'},
+  social:{day:'Sunday',desc:'Reviews, testimonials, shout-outs, press mentions, or audience reactions. Builds trust and credibility. Sunday audiences are relaxed and receptive to recommendation-style content.'},
+  gig:{day:'Paired with main',desc:"Event announcements and ticket links. Paired with the day's main content to boost reach. Keep these consistent in format so followers always know where to find show info."},
+};
+const IDEAS_SEED={
+  meme:['Behind-the-scenes load-in chaos','Soundcheck meme','Band communication stereotypes'],
+  rook:["How to get your first venue booking","5 things promoters won't tell you","What we charge and why"],
+  quote:['"The stage doesn\'t lie"','Local music scene truth bombs','Lyric spotlight from recent show'],
+  reels:['Top 5 venues in your city','Packing for a gig reel','Set-up timelapse'],
+  social:['Screenshot of a 5-star review','Fan DM reaction','Press mention graphic'],
+};
+
+let posts=JSON.parse(localStorage.getItem('bella_posts_v3')||'[]');
+let schedule=JSON.parse(localStorage.getItem('bella_schedule_v3')||'{}');
+let ideas=JSON.parse(localStorage.getItem('bella_ideas_v3')||'null')||Object.fromEntries(Object.keys(TYPES).map(k=>[k,(IDEAS_SEED[k]||[]).slice()]));
+let typeNotes=JSON.parse(localStorage.getItem('bella_typenotes')||'{}');
+let notes=localStorage.getItem('bella_notes_v3')||'';
+let activeFilter='all',pendingImgPostId=null,popoutKey=null;
+
+function save(){
+  localStorage.setItem('bella_posts_v3',JSON.stringify(posts));
+  localStorage.setItem('bella_schedule_v3',JSON.stringify(schedule));
+  localStorage.setItem('bella_ideas_v3',JSON.stringify(ideas));
+  localStorage.setItem('bella_typenotes',JSON.stringify(typeNotes));
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='planner')renderCalendar();
+  if(id==='queue'){renderSchedPanel();renderQueueWeeks();}
+  if(id==='autosched')renderAutoSched();
+  if(id==='ig')renderIG();
+  if(id==='categories')renderCategories();
+  if(id==='typenotes')renderTypeNotes();
+  if(id==='ideas')renderIdeas();
+}
+
+function buildCalendarInto(scrollEl){
+  scrollEl.innerHTML='';
+  for(let w=0;w<WEEKS;w++){
+    if(w>0){const d=document.createElement('div');d.className='week-divider';scrollEl.appendChild(d);}
+    const block=document.createElement('div');block.className='week-block';
+    DAYS.forEach(day=>{
+      const col=document.createElement('div');col.className='day-col';
+      col.innerHTML=`<div class="day-label">${w===0?day.label:day.label+' W'+(w+1)}</div><div class="day-slots"></div>`;
+      block.appendChild(col);
+      day.slots.forEach((slotType,si)=>renderSlot(col.querySelector('.day-slots'),`w${w}-${day.key}-${slotType}-${si}`,slotType));
+    });
+    scrollEl.appendChild(block);
+  }
+}
+function renderCalendar(){buildCalendarInto(document.getElementById('cal-scroll'));}
+function renderAutoCalendar(){buildCalendarInto(document.getElementById('cal-scroll-auto'));}
+function refreshBothCalendars(){
+  renderCalendar();
+  if(document.getElementById('tab-autosched').classList.contains('active')){renderAutoCalendar();renderAutoQueue();}
+}
+
+function renderSlot(container,slotId,slotType){
+  const pid=schedule[slotId],post=pid?posts.find(p=>p.id===pid):null;
+  const slot=document.createElement('div');
+  slot.className='slot'+(post?' has-post':'');
+  if(post){
+    const coverImg=migratePostImg(post);
+    const imgEl=coverImg?`<img class="slot-img" src="${coverImg}" alt=""/>`:`<div style="width:28px;height:28px;border-radius:4px;background:var(--bg3);flex-shrink:0;margin-right:6px;"></div>`;
+    slot.innerHTML=`${imgEl}<div class="slot-info"><div class="slot-name">${post.title}</div><div class="slot-type">${TYPES[post.type]?.label||post.type}</div></div><button class="slot-clear" onclick="clearSlot('${slotId}',event)">×</button>`;
+  }else{slot.innerHTML=`<span class="slot-placeholder">${SLOT_NAMES[slotType]||slotType}</span>`;}
+  slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drag-over');});
+  slot.addEventListener('dragleave',()=>slot.classList.remove('drag-over'));
+  slot.addEventListener('drop',e=>{
+    e.preventDefault();slot.classList.remove('drag-over');
+    const pid2=e.dataTransfer.getData('text/plain');if(!pid2)return;
+    Object.keys(schedule).forEach(k=>{if(schedule[k]===pid2)delete schedule[k];});
+    schedule[slotId]=pid2;save();refreshBothCalendars();renderLibrary();
+  });
+  slot.addEventListener('dblclick',()=>clearSlot(slotId));
+  container.appendChild(slot);
+}
+function clearSlot(slotId,e){if(e)e.stopPropagation();delete schedule[slotId];save();refreshBothCalendars();renderLibrary();showToast('Slot cleared');}
+
+function addPost(){
+  const title=document.getElementById('new-title').value.trim(),type=document.getElementById('new-type').value;
+  const pagesVal=parseInt(document.getElementById('new-pages').value)||1;
+  if(!title){showToast('Enter a title first');return;}
+  posts.push({id:Date.now().toString(),title,type,imgs:[],pages:pagesVal>1?pagesVal:1});save();
+  document.getElementById('new-title').value='';document.getElementById('new-pages').value='';
+  renderLibrary();showToast('Post added');
+}
+function renderLibrary(){
+  const scroll=document.getElementById('post-cards-scroll'),filterBar=document.getElementById('filter-bar');
+  const typeCounts={};posts.forEach(p=>{typeCounts[p.type]=(typeCounts[p.type]||0)+1;});
+  filterBar.innerHTML='';
+  const allBtn=document.createElement('button');
+  allBtn.className='filter-btn'+(activeFilter==='all'?' active':'');
+  allBtn.textContent=`All (${posts.length})`;
+  allBtn.onclick=()=>{activeFilter='all';renderLibrary();};
+  filterBar.appendChild(allBtn);
+  Object.entries(TYPES).forEach(([key,t])=>{
+    if(!typeCounts[key])return;
+    const btn=document.createElement('button');
+    btn.className='filter-btn'+(activeFilter===key?' active':'');
+    btn.textContent=`${t.label} (${typeCounts[key]})`;
+    btn.onclick=()=>{activeFilter=key;renderLibrary();};
+    filterBar.appendChild(btn);
+  });
+  const filtered=activeFilter==='all'?posts:posts.filter(p=>p.type===activeFilter);
+  scroll.innerHTML='';
+  if(!filtered.length){scroll.innerHTML='<div class="empty" style="padding:1rem;">No posts yet.</div>';return;}
+  const scheduledIds=new Set(Object.values(schedule));
+  filtered.forEach(post=>{
+    const card=document.createElement('div');
+    card.className='post-card'+(scheduledIds.has(post.id)?' scheduled':'');
+    card.draggable=true;
+    const tc=TYPES[post.type]?.cls||'type-social';
+    const isMulti=(post.pages||1)>1||(post.imgs||[]).length>1;
+    const slideCount=(post.imgs||[]).length>1?post.imgs.length:(post.pages||1);
+    const coverImg=migratePostImg(post);
+    const carouselOverlay=isMulti?`<div class="carousel-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><rect x="7" y="2" width="15" height="14" rx="2" opacity=".5"/></svg></div><div class="pages-badge">${slideCount}</div>`:'';
+    const imgWrap=coverImg
+      ?`<div class="post-thumb-wrap"><img class="post-card-img" src="${coverImg}" alt="" onclick="openEditModal('${post.id}')"/>${carouselOverlay}</div>`
+      :`<div class="post-thumb-wrap"><div class="post-card-img-placeholder" onclick="openEditModal('${post.id}')"><span>＋</span><small>Add photo</small></div>${carouselOverlay}</div>`;
+    card.innerHTML=`${imgWrap}<div class="post-card-body"><span class="post-card-badge ${tc}">${TYPES[post.type]?.label||post.type}</span>${isMulti?`<span style="font-size:9px;color:var(--text3);margin-left:4px;font-family:var(--cinzel);">${slideCount} slides</span>`:''}<div class="post-card-title">${post.title}</div>${scheduledIds.has(post.id)?'<span class="post-card-scheduled">Scheduled</span>':''}</div><button class="post-card-edit" onclick="openEditModal('${post.id}')">Edit</button><button class="post-card-del" onclick="deletePost('${post.id}')">×</button>`;
+    card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',post.id);e.dataTransfer.effectAllowed='move';});
+    scroll.appendChild(card);
+  });
+}
+function deletePost(id){
+  posts=posts.filter(p=>p.id!==id);
+  Object.keys(schedule).forEach(k=>{if(schedule[k]===id)delete schedule[k];});
+  save();renderLibrary();refreshBothCalendars();showToast('Post removed');
+}
+
+let editingPostId = null;
+
+function openEditModal(id) {
+  const post = posts.find(p=>p.id===id);
+  if(!post) return;
+  editingPostId = id;
+  migratePostImg(post); // ensure imgs array exists
+  document.getElementById('edit-title').value = post.title;
+  document.getElementById('edit-type').value  = post.type;
+  document.getElementById('edit-pages').value = Math.max(post.pages||1, (post.imgs||[]).length||1);
+  renderEditSlipStrip(post);
+  document.getElementById('edit-modal-bg').classList.add('show');
+  setTimeout(()=>document.getElementById('edit-title').focus(), 50);
+}
+
+function renderEditSlipStrip(post) {
+  const strip = document.getElementById('edit-slides-strip');
+  strip.innerHTML = '';
+  const imgs = post.imgs || [];
+  imgs.forEach((src, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'slide-thumb-wrap';
+    wrap.innerHTML = `
+      <img class="slide-thumb" src="${src}" alt="Slide ${i+1}"/>
+      ${i===0?'<div class="slide-cover-label">Cover</div>':''}
+      <button class="slide-rm" onclick="removeSlide('${post.id}',${i})" title="Remove slide">×</button>
+    `;
+    strip.appendChild(wrap);
+  });
+  if(!imgs.length) {
+    strip.innerHTML = '<div style="font-size:12px;color:var(--text3);font-family:var(--serif);font-style:italic;">No slides uploaded yet</div>';
+  }
+}
+
+function removeSlide(postId, idx) {
+  const post = posts.find(p=>p.id===postId);
+  if(!post||!post.imgs) return;
+  post.imgs.splice(idx, 1);
+  // adjust pages count down if needed
+  if(post.imgs.length > 0 && post.pages > post.imgs.length) post.pages = post.imgs.length;
+  document.getElementById('edit-pages').value = Math.max(post.pages||1, post.imgs.length||1);
+  save();
+  renderEditSlipStrip(post);
+  renderLibrary();
+  refreshBothCalendars();
+}
+
+function triggerSlideUpload() {
+  pendingImgPostId = editingPostId;
+  document.getElementById('img-upload-input').click();
+}
+
+function closeEditModalBtn() {
+  editingPostId = null;
+  document.getElementById('edit-modal-bg').classList.remove('show');
+}
+function closeEditModal(e) {
+  if(e.target===document.getElementById('edit-modal-bg')) closeEditModalBtn();
+}
+function saveEditPost() {
+  const post = posts.find(p=>p.id===editingPostId);
+  if(!post) return;
+  const newTitle = document.getElementById('edit-title').value.trim();
+  if(!newTitle) { showToast('Title cannot be empty'); return; }
+  post.title = newTitle;
+  post.type  = document.getElementById('edit-type').value;
+  const p    = parseInt(document.getElementById('edit-pages').value)||1;
+  post.pages = Math.max(p, (post.imgs||[]).length||1);
+  save();
+  closeEditModalBtn();
+  renderLibrary();
+  refreshBothCalendars();
+  if(document.getElementById('tab-queue').classList.contains('active')) renderQueueWeeks();
+  showToast('Post updated');
+}
+
+// migrate old single-img posts transparently
+function migratePostImg(post) {
+  if(!post.imgs) post.imgs = post.img ? [post.img] : [];
+  return post.imgs[0] || null;
+}
+
+function triggerImgUpload(postId){pendingImgPostId=postId;document.getElementById('img-upload-input').click();}
+document.getElementById('img-upload-input').addEventListener('change',function(){
+  const files=Array.from(this.files);
+  if(!files.length||!pendingImgPostId)return;
+  const post=posts.find(p=>p.id===pendingImgPostId);
+  if(!post){pendingImgPostId=null;this.value='';return;}
+  if(!post.imgs)post.imgs=post.img?[post.img]:[];
+  let loaded=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      post.imgs.push(e.target.result);
+      // auto-update pages count to match slide count if higher
+      if(post.imgs.length>post.pages)post.pages=post.imgs.length;
+      loaded++;
+      if(loaded===files.length){
+        save();renderLibrary();refreshBothCalendars();renderIG();
+        showToast(`${files.length} slide${files.length>1?'s':''} added`);
+        // refresh strip if edit modal is open for this post
+        if(editingPostId===post.id)renderEditSlipStrip(post);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  pendingImgPostId=null;this.value='';
+});
+
+function renderIG(){
+  const grid=document.getElementById('ig-grid'),orderEl=document.getElementById('ig-order');
+  const scheduled=[];
+  for(let w=0;w<WEEKS;w++){
+    DAYS.forEach(day=>{
+      day.slots.forEach((slotType,si)=>{
+        const pid=schedule[`w${w}-${day.key}-${slotType}-${si}`];
+        if(pid){const post=posts.find(p=>p.id===pid);if(post)scheduled.push({...post,dayLabel:day.label,week:w+1});}
+      });
+    });
+  }
+  const TOTAL_CELLS=33;grid.innerHTML='';
+  for(let i=0;i<TOTAL_CELLS;i++){
+    const cell=document.createElement('div');cell.className='ig-cell';
+    const p=scheduled[i];
+    if(p){
+      const tc=TYPES[p.type]?.cls||'type-social';
+      const coverImg=migratePostImg(p);
+      cell.innerHTML=coverImg
+        ?`<img src="${coverImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"/><div class="ig-cell-overlay"><span class="ig-cell-type ${tc}">${TYPES[p.type]?.label||p.type}</span><div class="ig-cell-title">${p.title.substring(0,24)}${p.title.length>24?'…':''}</div></div>`
+        :`<div style="text-align:center;padding:6px;"><div class="ig-cell-type ${tc}" style="display:inline-block;margin-bottom:4px;">${TYPES[p.type]?.label||p.type}</div><div style="font-size:9px;color:var(--text2);font-family:var(--serif);font-style:italic;">${p.title.substring(0,24)}${p.title.length>24?'…':''}</div></div>`;
+    }else{cell.classList.add('ig-cell-empty');}
+    grid.appendChild(cell);
+  }
+  orderEl.innerHTML='';
+  if(!scheduled.length){orderEl.innerHTML='<div class="empty">Schedule posts to see order.</div>';return;}
+  scheduled.forEach((p,i)=>{
+    const row=document.createElement('div');row.className='ig-order-row';
+    const tc=TYPES[p.type]?.cls||'type-social';
+    const coverImg=migratePostImg(p);
+    row.innerHTML=`<span class="ig-order-num">${i+1}</span>${coverImg?`<img class="ig-order-thumb" src="${coverImg}" alt=""/>`:'<div class="ig-order-thumb"></div>'}<div class="ig-order-info"><div><span class="ig-order-badge ${tc}">${TYPES[p.type]?.label||p.type}</span> <span style="font-size:10px;color:var(--text3);font-family:var(--cinzel)">${p.dayLabel} W${p.week}</span></div><div class="ig-order-title">${p.title}</div></div>`;
+    orderEl.appendChild(row);
+  });
+}
+
+function renderCategories(){
+  const grid=document.getElementById('cat-grid');grid.innerHTML='';
+  Object.entries(CAT_INFO).forEach(([key,cat])=>{
+    const card=document.createElement('div');card.className=`cat-card ${TYPES[key]?.cls||'type-social'}`;
+    card.innerHTML=`<h3>${TYPES[key]?.label||key}</h3><div class="cat-day">${cat.day}</div><p>${cat.desc}</p>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderTypeNotes(){
+  const grid=document.getElementById('type-notes-grid');grid.innerHTML='';
+  Object.entries(TYPES).forEach(([key,t])=>{
+    const card=document.createElement('div');card.className='type-note-card';
+    card.innerHTML=`<h4><span class="post-card-badge ${t.cls}" style="display:inline-block">${t.label}</span><button class="popout-btn" onclick="openPopout('${key}')">⤢ Pop out</button></h4><textarea class="type-note-textarea" id="typenote-${key}" placeholder="Notes, strategy, tone tips for ${t.label}...">${typeNotes[key]||''}</textarea>`;
+    const ta=card.querySelector('textarea');
+    ta.addEventListener('input',()=>{typeNotes[key]=ta.value;if(popoutKey===key)document.getElementById('popout-textarea').value=ta.value;save();});
+    grid.appendChild(card);
+  });
+}
+function openPopout(key){
+  popoutKey=key;
+  document.getElementById('popout-title').textContent=TYPES[key].label+' — Notes';
+  document.getElementById('popout-textarea').value=typeNotes[key]||'';
+  document.getElementById('popout-overlay').classList.add('show');
+  setTimeout(()=>document.getElementById('popout-textarea').focus(),50);
+}
+function closePopoutBtn(){
+  if(popoutKey){const val=document.getElementById('popout-textarea').value;typeNotes[popoutKey]=val;save();const ta=document.getElementById('typenote-'+popoutKey);if(ta)ta.value=val;}
+  popoutKey=null;document.getElementById('popout-overlay').classList.remove('show');
+}
+function closePopout(e){if(e.target===document.getElementById('popout-overlay'))closePopoutBtn();}
+document.getElementById('popout-textarea').addEventListener('input',function(){
+  if(!popoutKey)return;typeNotes[popoutKey]=this.value;save();
+  const ta=document.getElementById('typenote-'+popoutKey);if(ta)ta.value=this.value;
+});
+
+function renderAutoSched(){renderAutoCalendar();renderAutoQueue();}
+function renderAutoQueue(){
+  const typeListEl=document.getElementById('queue-type-list'),postListEl=document.getElementById('queue-post-list');
+  const scheduledIds=new Set(Object.values(schedule));
+  const unscheduled=posts.filter(p=>!scheduledIds.has(p.id));
+  const typeCounts={};unscheduled.forEach(p=>{typeCounts[p.type]=(typeCounts[p.type]||0)+1;});
+  typeListEl.innerHTML='';
+  Object.entries(TYPES).forEach(([key,t])=>{
+    if(!typeCounts[key])return;
+    const row=document.createElement('div');row.className='queue-type-row';
+    row.innerHTML=`<span class="post-card-badge ${t.cls}" style="display:inline-block">${t.label}</span><span style="flex:1"></span><span class="queue-count">${typeCounts[key]} ready</span>`;
+    typeListEl.appendChild(row);
+  });
+  if(!Object.keys(typeCounts).length)typeListEl.innerHTML='<div class="empty">All posts scheduled!</div>';
+  postListEl.innerHTML='';
+  if(!unscheduled.length){postListEl.innerHTML='<div class="empty">Nothing unscheduled.</div>';return;}
+  unscheduled.forEach(post=>{
+    const item=document.createElement('div');item.className='queue-post-item';
+    const tc=TYPES[post.type]?.cls||'type-social';
+    item.innerHTML=`${post.img?`<img class="queue-post-thumb" src="${post.img}" alt=""/>`:'<div class="queue-post-thumb"></div>'}<div class="queue-post-info"><span class="post-card-badge ${tc}" style="display:inline-block;font-size:9px;margin-bottom:2px;">${TYPES[post.type]?.label||post.type}</span><div class="queue-post-title">${post.title}</div></div>`;
+    postListEl.appendChild(item);
+  });
+}
+function autoFill(){
+  const scheduledIds=new Set(Object.values(schedule)),queues={};
+  posts.forEach(p=>{if(!scheduledIds.has(p.id)){if(!queues[p.type])queues[p.type]=[];queues[p.type].push(p.id);}});
+  let filled=0;
+  for(let w=0;w<WEEKS;w++){
+    for(const day of DAYS){
+      day.slots.forEach((slotType,si)=>{
+        const slotId=`w${w}-${day.key}-${slotType}-${si}`;
+        if(!schedule[slotId]&&queues[slotType]?.length){schedule[slotId]=queues[slotType].shift();filled++;}
+      });
+    }
+  }
+  save();refreshBothCalendars();renderAutoQueue();renderLibrary();
+  showToast(filled?`${filled} post${filled>1?'s':''} scheduled!`:'No matching posts to fill');
+}
+function clearAllSlots(){
+  if(!confirm('Clear all scheduled slots?'))return;
+  Object.keys(schedule).forEach(k=>delete schedule[k]);
+  save();refreshBothCalendars();renderAutoQueue();renderLibrary();showToast('All slots cleared');
+}
+
+function renderIdeas(){
+  const grid=document.getElementById('ideas-grid');grid.innerHTML='';
+  Object.entries(TYPES).forEach(([key,t])=>{
+    const card=document.createElement('div');card.className='idea-card';
+    const itemsHTML=(ideas[key]||[]).map((idea,i)=>`<li title="Click to remove" onclick="removeIdea('${key}',${i})">${idea}</li>`).join('');
+    card.innerHTML=`<h4><span class="post-card-badge ${t.cls}" style="display:inline-block">${t.label}</span></h4><ul>${itemsHTML||'<li style="list-style:none;color:var(--text3);padding-left:0">No ideas yet</li>'}</ul><div class="idea-input-row"><input id="idea-${key}" placeholder="Add an idea..." onkeydown="if(event.key==='Enter')addIdea('${key}')"/><button class="idea-add-btn" onclick="addIdea('${key}')">+</button></div>`;
+    grid.appendChild(card);
+  });
+}
+function addIdea(type){const input=document.getElementById('idea-'+type),val=input.value.trim();if(!val)return;if(!ideas[type])ideas[type]=[];ideas[type].push(val);save();renderIdeas();}
+function removeIdea(type,idx){ideas[type].splice(idx,1);save();renderIdeas();}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+document.getElementById('notes-area').value=notes;
+document.getElementById('notes-area').addEventListener('input',e=>{localStorage.setItem('bella_notes_v3',e.target.value);});
+
+// ── COLOR PALETTE ─────────────────────────────────────────────────────
+const SLOT_COLORS = [
+  {hex:'#fdf3ef',border:'#D85A30',text:'#712B13'},
+  {hex:'#f2f0fe',border:'#7F77DD',text:'#3C3489'},
+  {hex:'#f0f7e6',border:'#639922',text:'#27500A'},
+  {hex:'#e8f8f2',border:'#1D9E75',text:'#085041'},
+  {hex:'#fdf6e8',border:'#BA7517',text:'#633806'},
+  {hex:'#eaf3fc',border:'#378ADD',text:'#0C447C'},
+  {hex:'#fdf0f5',border:'#D4537E',text:'#72243E'},
+  {hex:'#fdf5ea',border:'#EF9F27',text:'#633806'},
+  {hex:'#f4f3f0',border:'#888780',text:'#444441'},
+  {hex:'#f2f9e8',border:'#97C459',text:'#3B6D11'},
+  {hex:'#fff8e1',border:'#c9a84c',text:'#7a5500'},
+  {hex:'#fce4ec',border:'#e91e63',text:'#880e4f'},
+  {hex:'#e3f2fd',border:'#1976d2',text:'#0d47a1'},
+  {hex:'#f3e5f5',border:'#7b1fa2',text:'#4a148c'},
+  {hex:'#e8f5e9',border:'#388e3c',text:'#1b5e20'},
+  {hex:'#fff3e0',border:'#f57c00',text:'#e65100'},
+];
+
+let colorPickerTarget = null; // {context:'saf'} or {context:'slot', di, si}
+
+function openColorPicker(context, evt, di, si) {
+  colorPickerTarget = (context==='saf') ? {context:'saf'} : {context:'slot',di,si};
+  const pop = document.getElementById('color-picker-pop');
+  pop.innerHTML = '';
+  SLOT_COLORS.forEach(c => {
+    const sw = document.createElement('div');
+    sw.className = 'cp-swatch';
+    sw.style.background = c.hex;
+    sw.style.border = `1.5px solid ${c.border}`;
+    sw.onclick = () => applyColor(c);
+    pop.appendChild(sw);
+  });
+  const rect = evt.target.getBoundingClientRect();
+  pop.style.top  = (rect.bottom + 4) + 'px';
+  pop.style.left = Math.min(rect.left, window.innerWidth - 160) + 'px';
+  pop.classList.add('open');
+  evt.stopPropagation();
+}
+
+function applyColor(c) {
+  const pop = document.getElementById('color-picker-pop');
+  pop.classList.remove('open');
+  if(!colorPickerTarget) return;
+  if(colorPickerTarget.context === 'saf') {
+    document.getElementById('saf-color-preview').style.background = c.hex;
+    document.getElementById('saf-color-preview').dataset.hex = c.hex;
+    document.getElementById('saf-color-preview').dataset.border = c.border;
+    document.getElementById('saf-color-preview').dataset.text = c.text;
+  } else {
+    const {di, si} = colorPickerTarget;
+    schedTemplate[di].slots[si] = {...schedTemplate[di].slots[si], color: c};
+    saveQueueData(); renderSchedPanel();
+  }
+  colorPickerTarget = null;
+}
+
+document.addEventListener('click', e => {
+  const pop = document.getElementById('color-picker-pop');
+  if(pop && !pop.contains(e.target)) pop.classList.remove('open');
+});
+
+// ── QUEUE TAB ─────────────────────────────────────────────────────────
+const DEFAULT_SCHED_TEMPLATE = [
+  {day:'Mon', slots:[{type:'meme'},{type:'gig',indent:true}]},
+  {day:'Tue', slots:[{type:'rook'},{type:'gig',indent:true}]},
+  {day:'Wed', slots:[{type:'tag'},{type:'venue'},{type:'gig',indent:true}]},
+  {day:'Thu', slots:[{type:'quote'},{type:'gig',indent:true}]},
+  {day:'Fri', slots:[{type:'reels'},{type:'debate'}]},
+  {day:'Sat', slots:[{type:'crowd'},{type:'gig',indent:true}]},
+  {day:'Sun', slots:[{type:'imagery'},{type:'social'},{type:'gig',indent:true}]},
+];
+
+// Migrate old string-based template if needed
+function migrateTemplate(tpl) {
+  return tpl.map(dayBlock => ({
+    day: dayBlock.day,
+    slots: (dayBlock.slots||[]).map(s => typeof s === 'string' ? {type:s} : s)
+  }));
+}
+
+let schedTemplate = migrateTemplate(JSON.parse(localStorage.getItem('bella_sched_tpl') || 'null') || JSON.parse(JSON.stringify(DEFAULT_SCHED_TEMPLATE)));
+let queueOrder    = JSON.parse(localStorage.getItem('bella_queue_order') || 'null');
+
+function saveQueueData() {
+  localStorage.setItem('bella_sched_tpl', JSON.stringify(schedTemplate));
+  if(queueOrder) localStorage.setItem('bella_queue_order', JSON.stringify(queueOrder));
+  else           localStorage.removeItem('bella_queue_order');
+}
+
+// ── ADD SLOT FORM ─────────────────────────────────────────────────────
+function toggleAddSlotForm() {
+  const form = document.getElementById('sched-add-form');
+  form.classList.toggle('open');
+  // reset custom field visibility
+  document.getElementById('saf-custom').style.display='none';
+  document.getElementById('saf-type').onchange = function(){
+    document.getElementById('saf-custom').style.display = this.value==='custom'?'':'none';
+  };
+}
+
+function confirmAddSlot() {
+  const day  = document.getElementById('saf-day').value;
+  const typeVal = document.getElementById('saf-type').value;
+  const customLabel = document.getElementById('saf-custom').value.trim();
+  const indent = document.getElementById('saf-indent').checked;
+  const colorPrev = document.getElementById('saf-color-preview');
+  const color = colorPrev.dataset.hex ? {hex:colorPrev.dataset.hex, border:colorPrev.dataset.border, text:colorPrev.dataset.text} : null;
+
+  const slotType = typeVal==='custom' ? (customLabel||'custom') : typeVal;
+  const dayBlock = schedTemplate.find(d=>d.day===day);
+  if(!dayBlock) return;
+  dayBlock.slots.push({type:slotType, ...(indent?{indent:true}:{}), ...(color?{color}:{})});
+  queueOrder = null;
+  saveQueueData();
+  renderSchedPanel();
+  renderQueueWeeks();
+  toggleAddSlotForm();
+  showToast('Slot added');
+}
+
+// ── BUILD AUTO QUEUE ──────────────────────────────────────────────────
+function getSlotType(s) { return typeof s==='string'?s:s.type; }
+
+function buildAutoQueue() {
+  const fullPool = {};
+  Object.keys(TYPES).forEach(t=>{fullPool[t]=[];});
+  posts.forEach(p=>{ if(fullPool[p.type]) fullPool[p.type].push(p.id); else fullPool[p.type]=[p.id]; });
+
+  const totalPosts = posts.length;
+  if(totalPosts===0) return [];
+  const result=[], usedIds=new Set();
+  const cursors={};
+  const allTypes = new Set([...Object.keys(TYPES),...schedTemplate.flatMap(d=>d.slots.map(getSlotType))]);
+  allTypes.forEach(t=>{cursors[t]=0; if(!fullPool[t])fullPool[t]=[];});
+
+  let placed=0, week=0;
+  while(placed<totalPosts && week<8) {
+    schedTemplate.forEach(dayBlock=>{
+      dayBlock.slots.forEach(slotDef=>{
+        const slotType=getSlotType(slotDef);
+        const pool=fullPool[slotType]||[];
+        let pid=null;
+        while(cursors[slotType]<pool.length){
+          const c=pool[cursors[slotType]];
+          if(!usedIds.has(c)){pid=c;cursors[slotType]++;break;}
+          cursors[slotType]++;
+        }
+        if(pid){usedIds.add(pid);placed++;}
+        result.push({type:slotType,slotDef,postId:pid,week,dayLabel:dayBlock.day});
+      });
+    });
+    week++;
+  }
+  return result;
+}
+
+function getQueueItems(){return queueOrder||buildAutoQueue();}
+
+// ── RENDER SCHEDULE PANEL ─────────────────────────────────────────────
+let schedDragSrc=null;
+
+function renderSchedPanel(){
+  const list=document.getElementById('sched-day-list');
+  list.innerHTML='';
+  schedTemplate.forEach((dayBlock,di)=>{
+    const dayEl=document.createElement('div'); dayEl.className='sched-day-block';
+    const lbl=document.createElement('div'); lbl.className='sched-day-label'; lbl.textContent=dayBlock.day;
+    dayEl.appendChild(lbl);
+    dayBlock.slots.forEach((slotDef,si)=>{
+      const slotType=getSlotType(slotDef);
+      const indent=slotDef.indent||false;
+      const color=slotDef.color||null;
+      const row=document.createElement('div');
+      row.className='sched-slot-row'+(indent?' indented':'');
+      row.draggable=true; row.dataset.di=di; row.dataset.si=si;
+      // color override
+      if(color){row.style.background=color.hex;row.style.borderColor=color.border;}
+      const typeLabel=TYPES[slotType]?.label||slotType;
+      const dotBg=color?color.hex:(TYPES[slotType]?getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim():'#f4f3f0');
+      const dotBorder=color?color.border:'rgba(0,0,0,.2)';
+      row.innerHTML=`
+        <span class="sched-slot-drag">⠿</span>
+        <span class="sched-slot-badge" style="${color?`background:${color.hex};color:${color.text};border-color:${color.border};`:''}${TYPES[slotType]?``:''}">${typeLabel}</span>
+        <button class="sched-slot-act" title="Toggle indent" onclick="toggleSlotIndent(${di},${si})">${indent?'←':'→'}</button>
+        <div class="sched-color-dot" style="background:${color?color.hex:'var(--bg3)'};border-color:${color?color.border:'rgba(0,0,0,.2)'};" onclick="openColorPicker('slot',event,${di},${si})" title="Change color"></div>
+        <button class="sched-slot-act" title="Remove slot" onclick="removeSchedSlot(${di},${si})" style="color:#c0392b;">×</button>
+      `;
+      // drag events
+      row.addEventListener('dragstart',e=>{schedDragSrc={di,si};e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','sched');});
+      row.addEventListener('dragover',e=>{e.preventDefault();row.style.outline='1.5px dashed var(--gold)';});
+      row.addEventListener('dragleave',()=>{row.style.outline='';});
+      row.addEventListener('drop',e=>{
+        e.preventDefault();row.style.outline='';
+        if(!schedDragSrc)return;
+        const src=schedDragSrc; schedDragSrc=null;
+        if(src.di===di&&src.si===si)return;
+        const srcSlot=schedTemplate[src.di].slots.splice(src.si,1)[0];
+        const tdi=parseInt(row.dataset.di),tsi=parseInt(row.dataset.si);
+        schedTemplate[tdi].slots.splice(tsi,0,srcSlot);
+        queueOrder=null; saveQueueData(); renderSchedPanel(); renderQueueWeeks();
+      });
+      dayEl.appendChild(row);
+    });
+    list.appendChild(dayEl);
+  });
+}
+
+function toggleSlotIndent(di,si){
+  const s=schedTemplate[di].slots[si];
+  schedTemplate[di].slots[si]={...s,indent:!s.indent};
+  saveQueueData(); renderSchedPanel();
+}
+function removeSchedSlot(di,si){
+  schedTemplate[di].slots.splice(si,1);
+  queueOrder=null; saveQueueData(); renderSchedPanel(); renderQueueWeeks();
+}
+
+// ── RENDER QUEUE WEEKS ────────────────────────────────────────────────
+const CAROUSEL_SVG=`<svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><rect x="7" y="2" width="15" height="14" rx="2" opacity=".5"/></svg>`;
+let qDragIdx=null;
+
+function renderQueueWeeks(){
+  const container=document.getElementById('queue-weeks');
+  container.innerHTML='';
+  const items=getQueueItems();
+  if(!items.length){container.innerHTML='<div class="empty">Add posts to your library to see the queue.</div>';return;}
+
+  const weeks=[];
+  items.forEach(item=>{
+    if(!weeks[item.week])weeks[item.week]={};
+    if(!weeks[item.week][item.dayLabel])weeks[item.week][item.dayLabel]=[];
+    weeks[item.week][item.dayLabel].push(item);
+  });
+
+  weeks.forEach((weekDays,wi)=>{
+    if(!weekDays)return;
+    const wb=document.createElement('div');wb.className='qweek-block';
+    const wl=document.createElement('div');wl.className='qweek-label';wl.textContent=wi===0?'Week 1':`Week ${wi+1}`;
+    wb.appendChild(wl);
+    schedTemplate.forEach(dayBlock=>{
+      const dayItems=weekDays[dayBlock.day];
+      if(!dayItems||!dayItems.length)return;
+      const dayEl=document.createElement('div');dayEl.className='qday-block';
+      const dl=document.createElement('div');dl.className='qday-label';dl.textContent=dayBlock.day;
+      dayEl.appendChild(dl);
+      const sl=document.createElement('div');sl.className='qslot-list';
+      dayItems.forEach(item=>{
+        const globalIdx=items.indexOf(item);
+        const post=item.postId?posts.find(p=>p.id===item.postId):null;
+        const slotDef=item.slotDef||{type:item.type};
+        const color=slotDef.color||null;
+        const indent=slotDef.indent||false;
+        const tc=TYPES[item.type]?.cls||'type-social';
+        const card=document.createElement('div');
+        card.className='qslot-card'+(!post?' is-placeholder':'');
+        card.dataset.idx=globalIdx;
+        if(indent)card.style.marginLeft='14px';
+
+        const isMulti=post&&((post.imgs||[]).length>1||(post.pages||1)>1);
+        const slideCount=post?(post.imgs||[]).length>1?post.imgs.length:(post.pages||1):0;
+        const coverImg=post?migratePostImg(post):null;
+        let thumbEl;
+        if(coverImg){
+          thumbEl=`<div class="qslot-thumb-wrap"><img class="qslot-thumb" src="${coverImg}" alt=""/>${isMulti?`<div class="slot-carousel">${CAROUSEL_SVG}</div><div class="slot-pages-badge">${slideCount}</div>`:''}</div>`;
+        } else if(post){
+          thumbEl=`<div class="qslot-thumb-wrap"><div class="qslot-thumb" style="background:var(--bg3);border-radius:4px;"></div>${isMulti?`<div class="slot-pages-badge">${slideCount}</div>`:''}</div>`;
+        } else {
+          thumbEl=`<div class="qslot-thumb-ph">◻</div>`;
+        }
+
+        const badgeStyle=color?`background:${color.hex};color:${color.text};border-color:${color.border};`:'';
+        const titleEl=post?`<div class="qslot-title">${post.title}${isMulti?`<span style="font-size:9px;color:var(--text3);margin-left:4px;font-family:var(--cinzel);">${slideCount} slides</span>`:''}</div>`:`<div class="qslot-title ph">No ${TYPES[item.type]?.label||item.type} uploaded yet</div>`;
+
+        card.innerHTML=`
+          ${thumbEl}
+          <div class="qslot-info">
+            <span class="qslot-badge ${color?'':tc}" style="${badgeStyle}">${TYPES[item.type]?.label||item.type}</span>
+            ${titleEl}
+          </div>
+          ${post?'<span class="qslot-drag-handle">⠿</span>':''}
+          ${post?`<button class="qslot-rm" title="Remove from queue" onclick="removeFromQueue(${globalIdx})">×</button>`:''}
+        `;
+
+        if(post){
+          card.draggable=true;
+          card.addEventListener('dragstart',e=>{qDragIdx=globalIdx;e.dataTransfer.setData('text/plain','qslot:'+globalIdx);e.dataTransfer.effectAllowed='move';});
+          card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-over-q');});
+          card.addEventListener('dragleave',()=>card.classList.remove('drag-over-q'));
+          card.addEventListener('drop',e=>{
+            e.preventDefault();card.classList.remove('drag-over-q');
+            const data=e.dataTransfer.getData('text/plain');
+            if(!data.startsWith('qslot:'))return;
+            const fromIdx=parseInt(data.split(':')[1]);
+            if(fromIdx===globalIdx)return;
+            if(!queueOrder)queueOrder=buildAutoQueue();
+            const[moved]=queueOrder.splice(fromIdx,1);
+            queueOrder.splice(globalIdx,0,moved);
+            saveQueueData();renderQueueWeeks();
+          });
+        }
+        sl.appendChild(card);
+      });
+      dayEl.appendChild(sl);wb.appendChild(dayEl);
+    });
+    container.appendChild(wb);
+  });
+}
+
+function removeFromQueue(idx){
+  if(!queueOrder)queueOrder=buildAutoQueue();
+  queueOrder.splice(idx,1);saveQueueData();renderQueueWeeks();
+}
+function resetQueue(){queueOrder=null;saveQueueData();renderQueueWeeks();showToast('Queue reset to auto order');}
+
+function pushQueueToCalendar(){
+  const items=getQueueItems().filter(i=>i.postId);
+  if(!items.length){showToast('No posts in queue to push');return;}
+  const itemsByType={};
+  items.forEach(item=>{if(!itemsByType[item.type])itemsByType[item.type]=[];itemsByType[item.type].push(item.postId);});
+  const cursors={};Object.keys(itemsByType).forEach(t=>{cursors[t]=0;});
+  let pushed=0;
+  for(let w=0;w<8;w++){
+    for(const dayBlock of schedTemplate){
+      const dayKey=DAYS.find(d=>d.label===dayBlock.day)?.key;
+      if(!dayKey)continue;
+      dayBlock.slots.forEach((slotDef,si)=>{
+        const slotType=getSlotType(slotDef);
+        const slotId=`w${w}-${dayKey}-${slotType}-${si}`;
+        if(schedule[slotId])return;
+        const pool=itemsByType[slotType];
+        if(pool&&cursors[slotType]<pool.length){
+          const pid=pool[cursors[slotType]++];
+          Object.keys(schedule).forEach(k=>{if(schedule[k]===pid)delete schedule[k];});
+          schedule[slotId]=pid;pushed++;
+        }
+      });
+    }
+  }
+  save();refreshBothCalendars();renderLibrary();
+  showToast(pushed?`${pushed} post${pushed>1?'s':''} pushed to calendar!`:'All slots already filled');
+}
+
+// ─────────────────────────────────────────────────────────────────────
+
+renderCalendar();
+renderLibrary();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Belladonna — Social Media Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#ffffff;--bg2:#f8f6f2;--bg3:#ede9e2;
+  --text:#1a1714;--text2:#6b6460;--text3:#a09890;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.16);
+  --gold:#c9a84c;--gold2:#e2c068;--gold3:#f5df90;
+  --gold-shine:linear-gradient(135deg,#c9a84c 0%,#f5df90 45%,#c9a84c 70%,#e2b84a 100%);
+  --gold-dim:rgba(201,168,76,.10);--gold-border:rgba(201,168,76,.35);--gold-border2:rgba(201,168,76,.6);
+  --radius:8px;--radius-lg:12px;
+  --font:'DM Sans',sans-serif;--cinzel:'Cinzel',serif;--serif:'EB Garamond',serif;
+}
+html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--text);}
+
+.nav{background:var(--bg);border-bottom:1px solid var(--border2);padding:0 1.25rem;display:flex;align-items:center;position:sticky;top:0;z-index:200;height:52px;}
+.nav-brand{font-family:var(--cinzel);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:1.25rem;white-space:nowrap;flex-shrink:0;}
+.nav-tabs{display:flex;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch;}
+.nav-tab{padding:14px 13px;font-size:10px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;font-family:var(--cinzel);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;white-space:nowrap;}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:600;}
+.nav-tab:hover:not(.active){color:var(--text);}
+
+.page{display:none;min-height:calc(100vh - 52px);}
+.page.active{display:flex;flex-direction:column;}
+.padded{padding:1.5rem 1.25rem 2rem;}
+.container{max-width:1040px;margin:0 auto;width:100%;}
+.page-title{font-family:var(--cinzel);font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px;}
+.page-sub{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;}
+.section-label{font-family:var(--cinzel);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+
+#tab-planner{height:calc(100vh - 52px);display:none;flex-direction:column;}
+#tab-planner.active{display:flex;}
+
+.cal-rail-wrap{background:var(--bg);border-bottom:1px solid var(--border2);flex-shrink:0;}
+.cal-rail-header{display:flex;align-items:center;justify-content:space-between;padding:10px 1.25rem 6px;gap:8px;}
+.cal-rail-title{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cal-rail-hint{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);}
+.cal-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 1.25rem 16px;display:flex;gap:8px;scrollbar-width:thin;}
+.cal-scroll::-webkit-scrollbar{height:4px;}
+.cal-scroll::-webkit-scrollbar-track{background:transparent;}
+.cal-scroll::-webkit-scrollbar-thumb{background:var(--gold-border);border-radius:2px;}
+.week-block{display:flex;gap:8px;flex-shrink:0;}
+.week-divider{width:1px;background:var(--border2);margin:0 4px;border-radius:1px;flex-shrink:0;}
+.day-col{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:8px;width:130px;flex-shrink:0;}
+.day-label{font-family:var(--cinzel);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;padding-bottom:5px;border-bottom:.5px solid var(--border);}
+.day-slots{display:flex;flex-direction:column;gap:4px;}
+.slot{border-radius:var(--radius);font-size:10px;border:.5px dashed var(--border2);background:var(--bg);color:var(--text3);min-height:44px;display:flex;align-items:center;padding:5px 7px;transition:all .12s;position:relative;cursor:default;}
+.slot.has-post{border-style:solid;cursor:pointer;}
+.slot.drag-over{background:var(--gold-dim);border-color:var(--gold-border2);border-style:dashed;}
+.slot-img{width:28px;height:28px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px;}
+.slot-info{flex:1;min-width:0;}
+.slot-name{font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;}
+.slot-type{font-size:9px;color:var(--text3);font-family:var(--serif);font-style:italic;margin-top:1px;}
+.slot-placeholder{font-family:var(--serif);font-style:italic;font-size:10px;color:var(--text3);}
+.slot-clear{position:absolute;top:3px;right:4px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;line-height:1;padding:1px 3px;border-radius:3px;display:none;}
+.slot.has-post:hover .slot-clear{display:block;}
+.slot-clear:hover{color:var(--text);background:var(--bg3);}
+
+.library-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);margin-top:8px;}
+.library-panel-header{padding:10px 1.25rem 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:2px solid var(--border2);background:var(--bg);flex-shrink:0;}
+.lib-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
+.filter-bar{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-btn{padding:3px 10px;border-radius:99px;font-size:10px;border:.5px solid var(--border2);background:none;cursor:pointer;color:var(--text2);font-family:var(--cinzel);letter-spacing:.04em;text-transform:uppercase;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+.add-post-inline{display:flex;gap:6px;align-items:center;padding:0 1.25rem 8px;background:var(--bg);flex-shrink:0;border-bottom:.5px solid var(--border2);}
+.add-post-inline input,.add-post-inline select{padding:6px 10px;font-size:12px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);transition:border-color .15s;}
+.add-post-inline input{flex:1;min-width:0;}
+.add-post-inline input:focus,.add-post-inline select:focus{outline:none;border-color:var(--gold-border2);}
+.add-post-inline input::placeholder{color:var(--text3);}
+.btn{cursor:pointer;font-family:var(--font);font-size:12px;border-radius:var(--radius);padding:6px 14px;transition:all .15s;white-space:nowrap;border:none;}
+.btn-primary{background:var(--text);color:var(--bg);font-weight:500;}
+.btn-primary:hover{opacity:.82;}
+.post-cards-scroll{flex:1;overflow-y:auto;padding:10px 1.25rem 1rem;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;}
+.post-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);cursor:grab;user-select:none;transition:border-color .12s,box-shadow .12s;width:160px;flex-shrink:0;overflow:hidden;position:relative;}
+.post-card:hover{border-color:var(--gold-border);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.post-card:active{cursor:grabbing;opacity:.8;}
+.post-card.scheduled{border-color:rgba(99,153,34,.4);}
+.post-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--bg3);}
+.post-card-img-placeholder{width:100%;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;}
+.post-card-img-placeholder span{font-size:20px;opacity:.4;}
+.post-card-img-placeholder small{font-size:9px;color:var(--text3);font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
+.post-card-body{padding:6px 8px 7px;}
+.post-card-badge{font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;display:inline-block;margin-bottom:3px;}
+.post-card-title{font-size:11px;color:var(--text);line-height:1.35;font-weight:500;}
+.post-card-scheduled{font-size:9px;color:#27500A;background:#EAF3DE;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;display:inline-block;margin-top:3px;}
+.post-card-del{position:absolute;top:4px;right:4px;background:rgba(255,255,255,.85);border:none;color:var(--text2);cursor:pointer;font-size:12px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;line-height:1;}
+.post-card:hover .post-card-del{display:flex;}
+.post-card-del:hover{background:#fff;color:var(--text);}
+.img-upload-input{display:none;}
+
+.type-meme{background:#fdf3ef;border-color:#D85A30;color:#712B13;}
+.type-rook{background:#f2f0fe;border-color:#7F77DD;color:#3C3489;}
+.type-tag{background:#f0f7e6;border-color:#639922;color:#27500A;}
+.type-venue{background:#e8f8f2;border-color:#1D9E75;color:#085041;}
+.type-quote{background:#fdf6e8;border-color:#BA7517;color:#633806;}
+.type-reels{background:#eaf3fc;border-color:#378ADD;color:#0C447C;}
+.type-debate{background:#f2f0fe;border-color:#7F77DD;color:#3C3489;}
+.type-crowd{background:#fdf0f5;border-color:#D4537E;color:#72243E;}
+.type-imagery{background:#fdf5ea;border-color:#EF9F27;color:#633806;}
+.type-social{background:#f4f3f0;border-color:#888780;color:#444441;}
+.type-gig{background:#f2f9e8;border-color:#97C459;color:#3B6D11;}
+
+.ig-wrap{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;max-width:420px;}
+.ig-cell{aspect-ratio:3/4;background:var(--bg3);border-radius:2px;overflow:hidden;border:.5px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;}
+.ig-cell img{width:100%;height:100%;object-fit:cover;display:block;}
+.ig-cell-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:5px;background:linear-gradient(transparent 40%,rgba(0,0,0,.45));}
+.ig-cell-type{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;font-family:var(--cinzel);letter-spacing:.03em;margin-bottom:2px;}
+.ig-cell-title{font-size:8px;color:rgba(255,255,255,.85);font-family:var(--serif);font-style:italic;text-align:center;line-height:1.2;}
+.ig-cell-empty{opacity:.2;}
+.ig-order-list{flex:1;min-width:200px;}
+.ig-order-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid var(--border);font-size:12px;}
+.ig-order-num{font-family:var(--cinzel);font-size:10px;color:var(--text3);min-width:18px;}
+.ig-order-thumb{width:28px;height:37px;border-radius:3px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.ig-order-info{flex:1;}
+.ig-order-badge{font-size:9px;font-family:var(--cinzel);letter-spacing:.03em;}
+.ig-order-title{font-size:12px;font-family:var(--serif);}
+
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.cat-card{border-radius:var(--radius-lg);padding:14px 16px;border:.5px solid var(--border);}
+.cat-card h3{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+.cat-card .cat-day{font-family:var(--cinzel);font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:.65;}
+.cat-card p{font-size:13px;line-height:1.65;font-family:var(--serif);}
+
+.type-notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.type-note-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;display:flex;flex-direction:column;gap:8px;}
+.type-note-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;}
+.type-note-textarea{width:100%;border:.5px solid var(--border2);border-radius:var(--radius);padding:8px 10px;font-size:12px;font-family:var(--serif);background:var(--bg2);color:var(--text);resize:vertical;min-height:80px;line-height:1.6;}
+.type-note-textarea:focus{outline:none;border-color:var(--gold-border2);}
+.popout-btn{background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-size:10px;padding:2px 7px;font-family:var(--cinzel);letter-spacing:.04em;white-space:nowrap;}
+.popout-btn:hover{background:var(--gold-dim);}
+
+.popout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:center;justify-content:center;padding:1.5rem;}
+.popout-overlay.show{display:flex;}
+.popout-box{background:var(--bg);border-radius:var(--radius-lg);border:.5px solid var(--border2);width:100%;max-width:700px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+.popout-header{padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid var(--border);}
+.popout-title{font-family:var(--cinzel);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.popout-close{background:none;border:.5px solid var(--border2);color:var(--text2);border-radius:var(--radius);cursor:pointer;font-size:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;}
+.popout-close:hover{background:var(--bg3);color:var(--text);}
+.popout-body{flex:1;overflow-y:auto;padding:1.25rem;}
+.popout-textarea{width:100%;border:.5px solid var(--border2);border-radius:var(--radius);padding:12px 14px;font-size:14px;font-family:var(--serif);background:var(--bg2);color:var(--text);resize:none;height:100%;min-height:340px;line-height:1.8;}
+.popout-textarea:focus{outline:none;border-color:var(--gold-border2);}
+
+.autosched-layout{display:flex;flex-direction:column;height:calc(100vh - 52px);}
+.autosched-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start;}
+.queue-panel{background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:1rem;min-width:240px;flex:1;max-width:340px;}
+.queue-panel h3{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.queue-panel .sub{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);margin-bottom:10px;}
+.queue-type-list{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.queue-type-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg2);border-radius:var(--radius);border:.5px solid var(--border);}
+.queue-count{font-family:var(--cinzel);font-size:11px;color:var(--text3);}
+.queue-unscheduled{margin-top:10px;border-top:.5px solid var(--border);padding-top:10px;}
+.queue-unscheduled h4{font-family:var(--cinzel);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.queue-post-item{display:flex;align-items:center;gap:7px;padding:5px 7px;background:var(--bg2);border-radius:var(--radius);border:.5px solid var(--border);margin-bottom:4px;}
+.queue-post-thumb{width:22px;height:29px;border-radius:3px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.queue-post-info{flex:1;min-width:0;}
+.queue-post-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.autofill-btn{width:100%;padding:9px;font-family:var(--cinzel);font-size:11px;letter-spacing:.07em;text-transform:uppercase;background:var(--text);color:var(--bg);border:none;border-radius:var(--radius);cursor:pointer;transition:opacity .15s;margin-bottom:6px;}
+.autofill-btn:hover{opacity:.82;}
+.autofill-clear-btn{width:100%;padding:7px;font-family:var(--cinzel);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:none;border:.5px solid var(--border2);color:var(--text3);border-radius:var(--radius);cursor:pointer;}
+.autofill-clear-btn:hover{background:var(--bg3);color:var(--text);}
+
+.ideas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
+.idea-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;}
+.idea-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.idea-card ul{padding-left:14px;font-size:13px;color:var(--text);line-height:2;font-family:var(--serif);}
+.idea-card ul li{cursor:pointer;}
+.idea-card ul li:hover{color:var(--text3);text-decoration:line-through;}
+.idea-input-row{display:flex;gap:5px;margin-top:8px;}
+.idea-input-row input{flex:1;padding:5px 9px;font-size:12px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);}
+.idea-input-row input:focus{outline:none;border-color:var(--gold-border2);}
+.idea-add-btn{padding:5px 10px;font-size:13px;background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-family:var(--cinzel);}
+.idea-add-btn:hover{background:var(--gold-dim);}
+
+.notes-area{width:100%;border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:14px;font-size:14px;font-family:var(--serif);background:var(--bg);color:var(--text);resize:vertical;min-height:220px;line-height:1.8;}
+.notes-area:focus{outline:none;border-color:var(--gold-border2);}
+.notes-hint{font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
+
+.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.empty{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);padding:.5rem 0;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#1a1714;font-size:11px;font-weight:700;padding:8px 20px;border-radius:99px;transition:transform .22s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:var(--cinzel);letter-spacing:.08em;text-transform:uppercase;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ══ QUEUE TAB ══ */
+#tab-queue{height:calc(100vh - 52px);display:none;flex-direction:column;}
+#tab-queue.active{display:flex;}
+.queue-tab-layout{flex:1;overflow:hidden;display:flex;flex-direction:row;}
+
+/* schedule side panel */
+.sched-panel{width:240px;flex-shrink:0;background:var(--bg);border-right:1px solid var(--border2);display:flex;flex-direction:column;overflow:hidden;}
+.sched-panel-header{padding:10px 12px 8px;border-bottom:.5px solid var(--border2);display:flex;align-items:center;gap:6px;}
+.sched-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;}
+.sched-add-btn{background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-size:14px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:300;}
+.sched-add-btn:hover{background:var(--gold-dim);}
+.sched-day-list{flex:1;overflow-y:auto;padding:8px 10px;}
+.sched-day-block{margin-bottom:10px;}
+.sched-day-label{font-family:var(--cinzel);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;padding:3px 4px;}
+.sched-slot-row{display:flex;align-items:center;gap:4px;padding:4px 6px;background:var(--bg2);border-radius:var(--radius);border:.5px solid var(--border);margin-bottom:3px;font-size:10px;transition:margin-left .15s;}
+.sched-slot-row.indented{margin-left:14px;background:var(--bg3);}
+.sched-slot-badge{font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;white-space:nowrap;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.sched-slot-drag{color:var(--text3);cursor:grab;font-size:12px;line-height:1;padding:0 1px;flex-shrink:0;}
+.sched-slot-act{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:1px 3px;border-radius:3px;flex-shrink:0;line-height:1;}
+.sched-slot-act:hover{color:var(--text);background:var(--bg3);}
+.sched-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;cursor:pointer;border:.5px solid rgba(0,0,0,.15);}
+
+/* add-slot mini form (slides in below header) */
+.sched-add-form{background:var(--bg2);border-bottom:.5px solid var(--border2);padding:8px 10px;display:none;flex-direction:column;gap:5px;}
+.sched-add-form.open{display:flex;}
+.sched-add-form select,.sched-add-form input{width:100%;padding:5px 8px;font-size:11px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:var(--font);}
+.sched-add-form select:focus,.sched-add-form input:focus{outline:none;border-color:var(--gold-border2);}
+.sched-add-form-row{display:flex;gap:5px;}
+.sched-add-form-row button{flex:1;padding:5px;font-size:11px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;border-radius:var(--radius);cursor:pointer;border:none;}
+.sched-add-confirm{background:var(--text);color:var(--bg);}
+.sched-add-cancel{background:none;border:.5px solid var(--border2) !important;color:var(--text2);}
+
+/* color palette for slots */
+.color-picker-pop{position:fixed;z-index:400;background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:8px;display:none;flex-wrap:wrap;gap:5px;width:140px;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.color-picker-pop.open{display:flex;}
+.cp-swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:.5px solid rgba(0,0,0,.1);transition:transform .1s;}
+.cp-swatch:hover{transform:scale(1.2);}
+
+/* multi-page indicators */
+.post-thumb-wrap{position:relative;flex-shrink:0;}
+.carousel-icon{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);border-radius:3px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;}
+.carousel-icon svg{width:10px;height:10px;fill:white;}
+.pages-badge{font-size:9px;font-weight:600;background:rgba(0,0,0,.6);color:#fff;border-radius:3px;padding:1px 4px;font-family:var(--cinzel);position:absolute;bottom:3px;left:3px;line-height:1.4;}
+.qslot-thumb-wrap{position:relative;flex-shrink:0;}
+.slot-pages-badge{font-size:8px;font-weight:600;background:rgba(0,0,0,.55);color:#fff;border-radius:2px;padding:1px 3px;font-family:var(--cinzel);position:absolute;bottom:2px;left:2px;line-height:1.3;}
+.slot-carousel{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);border-radius:2px;width:11px;height:11px;display:flex;align-items:center;justify-content:center;}
+.slot-carousel svg{width:8px;height:8px;fill:white;}
+
+/* main queue area */
+.queue-main{flex:1;overflow-y:auto;padding:1.25rem;}
+.queue-main-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;}
+.queue-main-title{font-family:var(--cinzel);font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.queue-actions{display:flex;gap:6px;align-items:center;}
+.push-cal-btn{padding:7px 16px;font-family:var(--cinzel);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:var(--text);color:var(--bg);border:none;border-radius:var(--radius);cursor:pointer;transition:opacity .15s;}
+.push-cal-btn:hover{opacity:.82;}
+.push-cal-btn-ghost{padding:7px 14px;font-family:var(--cinzel);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:none;border:.5px solid var(--border2);color:var(--text2);border-radius:var(--radius);cursor:pointer;}
+.push-cal-btn-ghost:hover{background:var(--bg3);color:var(--text);}
+
+/* week blocks in queue */
+.qweek-block{margin-bottom:1.5rem;}
+.qweek-label{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;padding-bottom:5px;border-bottom:.5px solid var(--border);}
+.qday-block{margin-bottom:10px;}
+.qday-label{font-family:var(--cinzel);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.qslot-list{display:flex;flex-direction:column;gap:5px;}
+
+/* individual queue slot card */
+.qslot-card{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);cursor:grab;transition:border-color .12s,box-shadow .12s;position:relative;}
+.qslot-card:hover{border-color:var(--gold-border);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.qslot-card.drag-over-q{background:var(--gold-dim);border-color:var(--gold-border2);}
+.qslot-card.is-placeholder{background:var(--bg2);border-style:dashed;cursor:default;opacity:.6;}
+.qslot-card:active:not(.is-placeholder){cursor:grabbing;opacity:.8;}
+.qslot-thumb{width:32px;height:42px;border-radius:4px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.qslot-thumb-ph{width:32px;height:42px;border-radius:4px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:.3;}
+.qslot-info{flex:1;min-width:0;}
+.qslot-badge{font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;display:inline-block;margin-bottom:2px;}
+.qslot-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qslot-title.ph{color:var(--text3);font-family:var(--serif);font-style:italic;font-weight:400;}
+.qslot-drag-handle{color:var(--text3);font-size:14px;cursor:grab;padding:0 2px;flex-shrink:0;}
+.qslot-rm{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 5px;border-radius:4px;flex-shrink:0;}
+.qslot-rm:hover{color:var(--text);background:var(--bg3);}
+
+@media(max-width:600px){.nav-brand{font-size:10px;}.post-card{width:140px;}.ig-grid{max-width:100%;}.sched-panel{width:160px;}}
 </style>
 </head>
 <body>
