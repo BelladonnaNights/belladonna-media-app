@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Belladonna — Social Media Planner</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -10,7 +10,7 @@
 :root{
   --bg:#ffffff;--bg2:#f8f6f2;--bg3:#ede9e2;
   --text:#1a1714;--text2:#6b6460;--text3:#a09890;
-  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.16);--border3:rgba(0,0,0,.28);
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.16);
   --gold:#c9a84c;--gold2:#e2c068;--gold3:#f5df90;
   --gold-shine:linear-gradient(135deg,#c9a84c 0%,#f5df90 45%,#c9a84c 70%,#e2b84a 100%);
   --gold-dim:rgba(201,168,76,.10);--gold-border:rgba(201,168,76,.35);--gold-border2:rgba(201,168,76,.6);
@@ -20,35 +20,99 @@
 html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--text);}
 
 /* NAV */
-.nav{background:var(--bg);border-bottom:1px solid var(--border2);padding:0 1.5rem;display:flex;align-items:center;position:sticky;top:0;z-index:100;height:56px;gap:0;}
-.nav-brand{font-family:var(--cinzel);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:1.5rem;white-space:nowrap;flex-shrink:0;}
+.nav{background:var(--bg);border-bottom:1px solid var(--border2);padding:0 1.25rem;display:flex;align-items:center;position:sticky;top:0;z-index:200;height:52px;}
+.nav-brand{font-family:var(--cinzel);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:1.25rem;white-space:nowrap;flex-shrink:0;}
 .nav-tabs{display:flex;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch;}
-.nav-tab{padding:14px 15px;font-size:11px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;font-family:var(--cinzel);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;white-space:nowrap;}
+.nav-tab{padding:14px 13px;font-size:10px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;font-family:var(--cinzel);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;white-space:nowrap;}
 .nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:600;}
 .nav-tab:hover:not(.active){color:var(--text);}
 
 /* PAGES */
-.page{display:none;min-height:calc(100vh - 56px);padding:1.75rem 1.25rem 3rem;}
-.page.active{display:block;}
-.container{max-width:980px;margin:0 auto;}
+.page{display:none;min-height:calc(100vh - 52px);}
+.page.active{display:flex;flex-direction:column;}
+.padded{padding:1.5rem 1.25rem 2rem;}
+.container{max-width:1040px;margin:0 auto;width:100%;}
 
-.page-title{font-family:var(--cinzel);font-size:17px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
-.page-sub{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;}
-.section-label{font-family:var(--cinzel);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.page-title{font-family:var(--cinzel);font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px;}
+.page-sub{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;}
+.section-label{font-family:var(--cinzel);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 
-.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;}
+/* ══════════════════════════════════════════
+   PLANNER PAGE — top calendar + bottom library
+══════════════════════════════════════════ */
+#tab-planner{height:calc(100vh - 52px);display:none;flex-direction:column;}
+#tab-planner.active{display:flex;}
 
-/* WEEK GRID */
-.week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;}
-.day-col{background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:10px;min-height:180px;}
-.day-label{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;padding-bottom:6px;border-bottom:.5px solid var(--border);}
-.day-slots{display:flex;flex-direction:column;gap:5px;}
-.slot{padding:6px 8px;border-radius:var(--radius);font-size:11px;font-weight:500;border:.5px dashed var(--border2);background:var(--bg2);color:var(--text3);min-height:38px;display:flex;align-items:center;transition:all .12s;cursor:default;}
-.slot.filled{border-style:solid;color:var(--text);}
-.slot.drop-target{background:var(--gold-dim);border-color:var(--gold-border2);border-style:dashed;}
-.slot[draggable=true]{cursor:grab;}
-.slot-sub{font-size:9px;color:var(--text3);margin-top:2px;font-weight:400;font-family:var(--serif);font-style:italic;}
-.slot-placeholder{font-family:var(--serif);font-style:italic;font-size:11px;}
+/* CALENDAR RAIL */
+.cal-rail-wrap{background:var(--bg);border-bottom:1px solid var(--border2);flex-shrink:0;}
+.cal-rail-header{display:flex;align-items:center;justify-content:space-between;padding:10px 1.25rem 6px;gap:8px;}
+.cal-rail-title{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cal-rail-hint{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);}
+.cal-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 1.25rem 10px;display:flex;gap:8px;scrollbar-width:thin;}
+.cal-scroll::-webkit-scrollbar{height:4px;}
+.cal-scroll::-webkit-scrollbar-track{background:var(--bg2);}
+.cal-scroll::-webkit-scrollbar-thumb{background:var(--gold-border);border-radius:2px;}
+
+.week-block{display:flex;gap:8px;flex-shrink:0;}
+.week-divider{width:1px;background:var(--border2);margin:0 4px;border-radius:1px;flex-shrink:0;}
+
+.day-col{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:8px;width:130px;flex-shrink:0;}
+.day-label{font-family:var(--cinzel);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;padding-bottom:5px;border-bottom:.5px solid var(--border);}
+.day-slots{display:flex;flex-direction:column;gap:4px;}
+
+.slot{border-radius:var(--radius);font-size:10px;border:.5px dashed var(--border2);background:var(--bg);color:var(--text3);min-height:44px;display:flex;align-items:center;padding:5px 7px;transition:all .12s;position:relative;cursor:default;}
+.slot.has-post{border-style:solid;cursor:pointer;}
+.slot.drag-over{background:var(--gold-dim);border-color:var(--gold-border2);border-style:dashed;}
+.slot-img{width:28px;height:28px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px;}
+.slot-info{flex:1;min-width:0;}
+.slot-name{font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;}
+.slot-type{font-size:9px;color:var(--text3);font-family:var(--serif);font-style:italic;margin-top:1px;}
+.slot-placeholder{font-family:var(--serif);font-style:italic;font-size:10px;color:var(--text3);}
+.slot-clear{position:absolute;top:3px;right:4px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;line-height:1;padding:1px 3px;border-radius:3px;display:none;}
+.slot.has-post:hover .slot-clear{display:block;}
+.slot-clear:hover{color:var(--text);background:var(--bg3);}
+
+/* POST LIBRARY BOTTOM PANEL */
+.library-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);}
+.library-panel-header{padding:10px 1.25rem 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:.5px solid var(--border2);background:var(--bg);flex-shrink:0;}
+.lib-panel-title{font-family:var(--cinzel);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
+.filter-bar{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-btn{padding:3px 10px;border-radius:99px;font-size:10px;border:.5px solid var(--border2);background:none;cursor:pointer;color:var(--text2);font-family:var(--cinzel);letter-spacing:.04em;text-transform:uppercase;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+
+.add-post-inline{display:flex;gap:6px;align-items:center;padding:0 1.25rem 8px;background:var(--bg);flex-shrink:0;border-bottom:.5px solid var(--border2);}
+.add-post-inline input,.add-post-inline select{padding:6px 10px;font-size:12px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);transition:border-color .15s;}
+.add-post-inline input{flex:1;min-width:0;}
+.add-post-inline input:focus,.add-post-inline select:focus{outline:none;border-color:var(--gold-border2);}
+.add-post-inline input::placeholder{color:var(--text3);}
+.btn{cursor:pointer;font-family:var(--font);font-size:12px;border-radius:var(--radius);padding:6px 14px;transition:all .15s;white-space:nowrap;border:none;}
+.btn-primary{background:var(--text);color:var(--bg);font-weight:500;}
+.btn-primary:hover{opacity:.82;}
+.btn-ghost{background:none;border:.5px solid var(--border2);color:var(--text2);}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);}
+.btn-gold{background:none;border:.5px solid var(--gold-border2);color:var(--gold);font-family:var(--cinzel);letter-spacing:.05em;font-size:11px;}
+.btn-gold:hover{background:var(--gold-dim);}
+
+.post-cards-scroll{flex:1;overflow-y:auto;padding:10px 1.25rem 1rem;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;}
+.post-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);cursor:grab;user-select:none;transition:border-color .12s,box-shadow .12s;width:160px;flex-shrink:0;overflow:hidden;position:relative;}
+.post-card:hover{border-color:var(--gold-border);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.post-card:active{cursor:grabbing;opacity:.8;}
+.post-card.scheduled{border-color:rgba(99,153,34,.4);}
+.post-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--bg3);}
+.post-card-img-placeholder{width:100%;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;}
+.post-card-img-placeholder span{font-size:20px;opacity:.4;}
+.post-card-img-placeholder small{font-size:9px;color:var(--text3);font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
+.post-card-body{padding:6px 8px 7px;}
+.post-card-badge{font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;display:inline-block;margin-bottom:3px;}
+.post-card-title{font-size:11px;color:var(--text);line-height:1.35;font-weight:500;}
+.post-card-scheduled{font-size:9px;color:#27500A;background:#EAF3DE;padding:1px 6px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.03em;display:inline-block;margin-top:3px;}
+.post-card-del{position:absolute;top:4px;right:4px;background:rgba(255,255,255,.85);border:none;color:var(--text2);cursor:pointer;font-size:12px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;line-height:1;}
+.post-card:hover .post-card-del{display:flex;}
+.post-card-del:hover{background:#fff;color:var(--text);}
+
+/* hidden file input for image upload */
+.img-upload-input{display:none;}
 
 /* POST TYPE COLOURS */
 .type-meme{background:#fdf3ef;border-color:#D85A30;color:#712B13;}
@@ -63,467 +127,595 @@ html,body{height:100%;font-family:var(--font);background:var(--bg2);color:var(--
 .type-social{background:#f4f3f0;border-color:#888780;color:#444441;}
 .type-gig{background:#f2f9e8;border-color:#97C459;color:#3B6D11;}
 
-/* STATS */
-.stats-row{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap;}
-.stat{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:80px;border-left:3px solid var(--gold);}
-.stat-val{font-family:var(--cinzel);font-size:22px;font-weight:600;line-height:1.1;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.stat-label{font-size:11px;color:var(--text2);margin-top:2px;font-family:var(--cinzel);letter-spacing:.06em;text-transform:uppercase;}
+/* ══════════════════════════════════════════
+   IG PREVIEW
+══════════════════════════════════════════ */
+.ig-wrap{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;max-width:420px;}
+.ig-cell{aspect-ratio:3/4;background:var(--bg3);border-radius:2px;overflow:hidden;border:.5px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;}
+.ig-cell img{width:100%;height:100%;object-fit:cover;display:block;}
+.ig-cell-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:5px;background:linear-gradient(transparent 40%,rgba(0,0,0,.45));}
+.ig-cell-type{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;font-family:var(--cinzel);letter-spacing:.03em;margin-bottom:2px;}
+.ig-cell-title{font-size:8px;color:rgba(255,255,255,.85);font-family:var(--serif);font-style:italic;text-align:center;line-height:1.2;}
+.ig-cell-empty{opacity:.2;}
+.ig-order-list{flex:1;min-width:200px;}
+.ig-order-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid var(--border);font-size:12px;}
+.ig-order-num{font-family:var(--cinzel);font-size:10px;color:var(--text3);min-width:18px;}
+.ig-order-thumb{width:28px;height:37px;border-radius:3px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.ig-order-info{flex:1;}
+.ig-order-badge{font-size:9px;font-family:var(--cinzel);letter-spacing:.03em;}
+.ig-order-title{font-size:12px;font-family:var(--serif);}
 
-/* ADD POST FORM */
-.add-post-form{background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;}
-.form-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.form-row input,.form-row select{flex:1;min-width:140px;padding:8px 12px;font-size:13px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);transition:border-color .15s;}
-.form-row input:focus,.form-row select:focus{outline:none;border-color:var(--gold-border2);}
-.form-row input::placeholder{color:var(--text3);}
-
-/* BUTTONS */
-.btn{cursor:pointer;font-family:var(--font);font-size:13px;border-radius:var(--radius);padding:8px 16px;transition:all .15s;white-space:nowrap;}
-.btn-primary{background:var(--text);color:var(--bg);border:none;font-weight:500;}
-.btn-primary:hover{opacity:.82;}
-.btn-ghost{background:none;border:.5px solid var(--border2);color:var(--text2);}
-.btn-ghost:hover{background:var(--bg3);color:var(--text);}
-.btn-sm{padding:5px 12px;font-size:11px;}
-
-/* FILTER BAR */
-.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
-.filter-btn{padding:4px 12px;border-radius:99px;font-size:11px;border:.5px solid var(--border2);background:none;cursor:pointer;color:var(--text2);font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;transition:all .15s;}
-.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
-.filter-btn:hover:not(.active){background:var(--bg3);}
-
-/* LIBRARY */
-.library{display:flex;flex-direction:column;gap:5px;}
-.post-card{padding:9px 12px;border-radius:var(--radius);border:.5px solid var(--border);background:var(--bg);cursor:grab;display:flex;align-items:center;gap:10px;user-select:none;transition:border-color .12s;}
-.post-card:hover{border-color:var(--gold-border);}
-.post-card:active{cursor:grabbing;opacity:.7;}
-.badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap;font-family:var(--cinzel);letter-spacing:.04em;}
-.post-card .title{font-size:13px;color:var(--text);flex:1;}
-.scheduled-tag{font-size:10px;color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:99px;font-family:var(--cinzel);letter-spacing:.04em;}
-.drag-hint{font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic;}
-.del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:2px 7px;font-size:15px;border-radius:4px;line-height:1;}
-.del-btn:hover{color:var(--text);background:var(--bg3);}
-
-/* IG GRID */
-.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:380px;}
-.ig-cell{aspect-ratio:1;background:var(--bg3);border-radius:2px;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;overflow:hidden;border:.5px solid var(--border);}
-.ig-type{font-size:9px;font-weight:500;padding:2px 5px;border-radius:3px;font-family:var(--cinzel);letter-spacing:.03em;}
-.ig-title{font-size:9px;color:var(--text2);margin-top:3px;font-family:var(--serif);font-style:italic;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
-
-/* CATEGORY CARDS */
+/* ══════════════════════════════════════════
+   POST TYPES TAB
+══════════════════════════════════════════ */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
 .cat-card{border-radius:var(--radius-lg);padding:14px 16px;border:.5px solid var(--border);}
-.cat-card h3{font-family:var(--cinzel);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
-.cat-card .cat-day{font-family:var(--cinzel);font-size:10px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:.7;}
+.cat-card h3{font-family:var(--cinzel);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+.cat-card .cat-day{font-family:var(--cinzel);font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:.65;}
 .cat-card p{font-size:13px;line-height:1.65;font-family:var(--serif);}
 
-/* IDEAS */
+/* ══════════════════════════════════════════
+   POST TYPE NOTES TAB
+══════════════════════════════════════════ */
+.type-notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.type-note-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;display:flex;flex-direction:column;gap:8px;}
+.type-note-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;}
+.type-note-textarea{width:100%;border:.5px solid var(--border2);border-radius:var(--radius);padding:8px 10px;font-size:12px;font-family:var(--serif);background:var(--bg2);color:var(--text);resize:vertical;min-height:80px;line-height:1.6;}
+.type-note-textarea:focus{outline:none;border-color:var(--gold-border2);}
+
+/* ══════════════════════════════════════════
+   IDEAS
+══════════════════════════════════════════ */
 .ideas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
 .idea-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;}
-.idea-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:10px;}
+.idea-card h4{font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
 .idea-card ul{padding-left:14px;font-size:13px;color:var(--text);line-height:2;font-family:var(--serif);}
 .idea-card ul li{cursor:pointer;}
 .idea-card ul li:hover{color:var(--text3);text-decoration:line-through;}
-.idea-input-row{display:flex;gap:6px;margin-top:10px;}
-.idea-input-row input{flex:1;padding:5px 10px;font-size:12px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);}
+.idea-input-row{display:flex;gap:5px;margin-top:8px;}
+.idea-input-row input{flex:1;padding:5px 9px;font-size:12px;border:.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);font-family:var(--font);}
 .idea-input-row input:focus{outline:none;border-color:var(--gold-border2);}
 .idea-add-btn{padding:5px 10px;font-size:13px;background:none;border:.5px solid var(--gold-border);color:var(--gold);border-radius:var(--radius);cursor:pointer;font-family:var(--cinzel);}
 .idea-add-btn:hover{background:var(--gold-dim);}
 
-/* NOTES */
-.notes-area{width:100%;border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:14px;font-size:14px;font-family:var(--serif);background:var(--bg);color:var(--text);resize:vertical;min-height:200px;line-height:1.8;}
+/* ══════════════════════════════════════════
+   NOTES
+══════════════════════════════════════════ */
+.notes-area{width:100%;border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:14px;font-size:14px;font-family:var(--serif);background:var(--bg);color:var(--text);resize:vertical;min-height:220px;line-height:1.8;}
 .notes-area:focus{outline:none;border-color:var(--gold-border2);}
-.notes-hint{font-size:11px;color:var(--text3);margin-top:6px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
+.notes-hint{font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--cinzel);letter-spacing:.05em;text-transform:uppercase;}
 
 /* MISC */
-.empty{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text3);padding:.75rem 0;}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#1a1714;font-size:11px;font-weight:700;padding:9px 22px;border-radius:99px;transition:transform .22s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:var(--cinzel);letter-spacing:.08em;text-transform:uppercase;}
+.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.empty{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);padding:.5rem 0;}
+.stat{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;flex:1;min-width:80px;border-left:3px solid var(--gold);}
+.stat-val{font-family:var(--cinzel);font-size:20px;font-weight:600;line-height:1.1;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:10px;color:var(--text2);margin-top:2px;font-family:var(--cinzel);letter-spacing:.06em;text-transform:uppercase;}
+.stats-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#1a1714;font-size:11px;font-weight:700;padding:8px 20px;border-radius:99px;transition:transform .22s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:var(--cinzel);letter-spacing:.08em;text-transform:uppercase;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-@media(max-width:760px){
-  .week-grid{grid-template-columns:repeat(2,1fr);}
-  .two-col{grid-template-columns:1fr;}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal{background:var(--bg);border-radius:var(--radius-lg);padding:1.5rem;max-width:340px;width:90%;border:.5px solid var(--border2);}
+.modal h3{font-family:var(--cinzel);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;background:var(--gold-shine);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+@media(max-width:600px){
+  .nav-brand{font-size:10px;}
+  .post-card{width:140px;}
   .ig-grid{max-width:100%;}
-  .nav-brand{font-size:11px;}
-}
-@media(max-width:480px){
-  .week-grid{grid-template-columns:1fr;}
-  .nav-tab{padding:14px 11px;font-size:10px;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
-  <div class="nav-brand">Belladonna — Planner</div>
+  <div class="nav-brand">Belladonna</div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showTab('schedule',this)">Schedule</button>
-    <button class="nav-tab" onclick="showTab('library',this)">Post Library</button>
-    <button class="nav-tab" onclick="showTab('grid',this)">IG Preview</button>
+    <button class="nav-tab active" onclick="showTab('planner',this)">Planner</button>
+    <button class="nav-tab" onclick="showTab('ig',this)">IG Preview</button>
     <button class="nav-tab" onclick="showTab('categories',this)">Post Types</button>
+    <button class="nav-tab" onclick="showTab('typenotes',this)">Type Notes</button>
     <button class="nav-tab" onclick="showTab('ideas',this)">Ideas</button>
     <button class="nav-tab" onclick="showTab('notes',this)">Notes</button>
   </div>
 </nav>
 
-<!-- SCHEDULE -->
-<div id="tab-schedule" class="page active">
-  <div class="container">
-    <div class="page-title">Weekly Schedule</div>
-    <div class="page-sub">Drag posts from your library onto the day slots. Double-click a filled slot to clear it.</div>
-    <div class="week-grid" id="week-grid"></div>
+<!-- ══ PLANNER ══ -->
+<div id="tab-planner" class="page active">
+
+  <!-- Calendar Rail -->
+  <div class="cal-rail-wrap">
+    <div class="cal-rail-header">
+      <div class="cal-rail-title">Weekly Schedule</div>
+      <div class="cal-rail-hint">Drag posts up from library below · double-click a slot to clear</div>
+    </div>
+    <div class="cal-scroll" id="cal-scroll"></div>
+  </div>
+
+  <!-- Library Panel -->
+  <div class="library-panel">
+    <div class="library-panel-header">
+      <div class="lib-panel-title">Post Library</div>
+      <div class="filter-bar" id="filter-bar"></div>
+    </div>
+    <div class="add-post-inline">
+      <input id="new-title" placeholder="Post title or caption..." onkeydown="if(event.key==='Enter')addPost()"/>
+      <select id="new-type">
+        <option value="meme">Meme</option>
+        <option value="rook">Rook Post</option>
+        <option value="tag">Tag</option>
+        <option value="venue">Venue Love / Repost</option>
+        <option value="quote">Quote / Bar Truth</option>
+        <option value="reels">Reels &amp; Lists</option>
+        <option value="debate">Rook Debate</option>
+        <option value="crowd">Crowd &amp; Vibe</option>
+        <option value="imagery">Crow Imagery</option>
+        <option value="social">Social Proof</option>
+        <option value="gig">Gig Post</option>
+      </select>
+      <button class="btn btn-primary" onclick="addPost()">+ Add</button>
+    </div>
+    <div class="post-cards-scroll" id="post-cards-scroll"></div>
   </div>
 </div>
 
-<!-- POST LIBRARY -->
-<div id="tab-library" class="page">
-  <div class="container">
-    <div class="page-title">Post Library</div>
-    <div class="page-sub">Add posts, filter by type, and drag them onto the schedule.</div>
-    <div class="add-post-form">
-      <div class="section-label">Add a new post</div>
-      <div class="form-row">
-        <input id="new-title" placeholder="Post title or caption..." onkeydown="if(event.key==='Enter')addPost()"/>
-        <select id="new-type">
-          <option value="meme">Meme</option>
-          <option value="rook">Rook Post</option>
-          <option value="tag">Tag</option>
-          <option value="venue">Venue Love / Repost</option>
-          <option value="quote">Quote / Bar Truth</option>
-          <option value="reels">Reels &amp; Lists</option>
-          <option value="debate">Rook Debate</option>
-          <option value="crowd">Crowd &amp; Vibe</option>
-          <option value="imagery">Crow Imagery</option>
-          <option value="social">Social Proof</option>
-          <option value="gig">Gig Post</option>
-        </select>
-        <button class="btn btn-primary" onclick="addPost()">+ Add Post</button>
+<!-- ══ IG PREVIEW ══ -->
+<div id="tab-ig" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Instagram Preview</div>
+      <div class="page-sub">Your scheduled posts in 3:4 portrait format, as they'll appear on your grid.</div>
+      <div class="ig-wrap">
+        <div>
+          <div class="section-label" style="margin-bottom:8px;">Grid (3 columns · 3:4)</div>
+          <div class="ig-grid" id="ig-grid"></div>
+        </div>
+        <div class="ig-order-list">
+          <div class="section-label" style="margin-bottom:8px;">Posting order</div>
+          <div id="ig-order"></div>
+        </div>
       </div>
     </div>
-    <div class="stats-row" id="type-counts"></div>
-    <div class="filter-bar" id="filter-bar"></div>
-    <div class="library" id="library"></div>
   </div>
 </div>
 
-<!-- IG PREVIEW -->
-<div id="tab-grid" class="page">
-  <div class="container">
-    <div class="page-title">Instagram Preview</div>
-    <div class="page-sub">Your scheduled posts laid out as they'll appear on your profile — left to right, top to bottom.</div>
-    <div class="two-col">
-      <div>
-        <div class="section-label" style="margin-bottom:10px;">Grid preview</div>
-        <div class="ig-grid" id="ig-grid"></div>
-      </div>
-      <div>
-        <div class="section-label" style="margin-bottom:10px;">Posting order</div>
-        <div id="ig-order"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- POST TYPES -->
+<!-- ══ POST TYPES ══ -->
 <div id="tab-categories" class="page">
-  <div class="container">
-    <div class="page-title">Post Types</div>
-    <div class="page-sub">What each format is for, why it works, and when to use it.</div>
-    <div class="cat-grid" id="cat-grid"></div>
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Types</div>
+      <div class="page-sub">What each format is for, why it works, and when to use it.</div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
   </div>
 </div>
 
-<!-- IDEAS -->
+<!-- ══ TYPE NOTES ══ -->
+<div id="tab-typenotes" class="page">
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Type Notes</div>
+      <div class="page-sub">Strategy notes, ideas, and reminders specific to each post type. Auto-saves as you type.</div>
+      <div class="type-notes-grid" id="type-notes-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ IDEAS ══ -->
 <div id="tab-ideas" class="page">
-  <div class="container">
-    <div class="page-title">Post Ideas</div>
-    <div class="page-sub">Capture ideas by category before you sit down to create. Click an idea to remove it.</div>
-    <div class="ideas-grid" id="ideas-grid"></div>
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Post Ideas</div>
+      <div class="page-sub">Capture ideas by category before you sit down to create. Click an idea to remove it.</div>
+      <div class="ideas-grid" id="ideas-grid"></div>
+    </div>
   </div>
 </div>
 
-<!-- NOTES -->
+<!-- ══ NOTES ══ -->
 <div id="tab-notes" class="page">
-  <div class="container">
-    <div class="page-title">Notes</div>
-    <div class="page-sub">Hashtag sets, brand voice reminders, collab ideas, strategy thoughts — anything you need at hand.</div>
-    <div class="card">
-      <textarea class="notes-area" id="notes-area" placeholder="Start writing your notes here..."></textarea>
-      <div class="notes-hint">Auto-saves as you type</div>
+  <div class="padded" style="flex:1;overflow-y:auto;">
+    <div class="container">
+      <div class="page-title">Notes</div>
+      <div class="page-sub">Hashtag sets, brand voice reminders, collab ideas, strategy thoughts.</div>
+      <div class="card">
+        <textarea class="notes-area" id="notes-area" placeholder="Start writing..."></textarea>
+        <div class="notes-hint">Auto-saves as you type</div>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+<input type="file" class="img-upload-input" id="img-upload-input" accept="image/*"/>
 
 <script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const WEEKS = 8; // how many weeks to show in the calendar
 const DAYS = [
-  { key:'mon', label:'Mon', full:'Monday',    slots:['meme','gig'] },
-  { key:'tue', label:'Tue', full:'Tuesday',   slots:['rook','gig'] },
-  { key:'wed', label:'Wed', full:'Wednesday', slots:['tag','venue','gig'] },
-  { key:'thu', label:'Thu', full:'Thursday',  slots:['quote','gig'] },
-  { key:'fri', label:'Fri', full:'Friday',    slots:['reels','debate'] },
-  { key:'sat', label:'Sat', full:'Saturday',  slots:['crowd','gig'] },
-  { key:'sun', label:'Sun', full:'Sunday',    slots:['imagery','social','gig'] },
+  {key:'mon',label:'Mon',slots:['meme','gig']},
+  {key:'tue',label:'Tue',slots:['rook','gig']},
+  {key:'wed',label:'Wed',slots:['tag','venue','gig']},
+  {key:'thu',label:'Thu',slots:['quote','gig']},
+  {key:'fri',label:'Fri',slots:['reels','debate']},
+  {key:'sat',label:'Sat',slots:['crowd','gig']},
+  {key:'sun',label:'Sun',slots:['imagery','social','gig']},
 ];
-
 const TYPES = {
-  meme:    { label:'Meme',                cls:'type-meme' },
-  rook:    { label:'Rook Post',           cls:'type-rook' },
-  tag:     { label:'Tag',                 cls:'type-tag' },
-  venue:   { label:'Venue Love / Repost', cls:'type-venue' },
-  quote:   { label:'Quote / Bar Truth',   cls:'type-quote' },
-  reels:   { label:'Reels & Lists',       cls:'type-reels' },
-  debate:  { label:'Rook Debate',         cls:'type-debate' },
-  crowd:   { label:'Crowd & Vibe',        cls:'type-crowd' },
-  imagery: { label:'Crow Imagery',        cls:'type-imagery' },
-  social:  { label:'Social Proof',        cls:'type-social' },
-  gig:     { label:'Gig Post',            cls:'type-gig' },
+  meme:    {label:'Meme',               cls:'type-meme'},
+  rook:    {label:'Rook Post',          cls:'type-rook'},
+  tag:     {label:'Tag',                cls:'type-tag'},
+  venue:   {label:'Venue Love/Repost',  cls:'type-venue'},
+  quote:   {label:'Quote / Bar Truth',  cls:'type-quote'},
+  reels:   {label:'Reels & Lists',      cls:'type-reels'},
+  debate:  {label:'Rook Debate',        cls:'type-debate'},
+  crowd:   {label:'Crowd & Vibe',       cls:'type-crowd'},
+  imagery: {label:'Crow Imagery',       cls:'type-imagery'},
+  social:  {label:'Social Proof',       cls:'type-social'},
+  gig:     {label:'Gig Post',           cls:'type-gig'},
 };
-
 const SLOT_NAMES = {
-  meme:'Meme', rook:'Rook Post', tag:'Tag', venue:'Venue Love / Repost',
-  quote:'Quote / Bar Truth', reels:'Reels & Lists', debate:'Rook Debate',
-  crowd:'Crowd & Vibe', imagery:'Crow Imagery', social:'Social Proof', gig:'Gig Post',
+  meme:'Meme',rook:'Rook Post',tag:'Tag',venue:'Venue Love',
+  quote:'Quote / Bar Truth',reels:'Reels & Lists',debate:'Rook Debate',
+  crowd:'Crowd & Vibe',imagery:'Crow Imagery',social:'Social Proof',gig:'Gig Post',
 };
-
 const CAT_INFO = {
-  meme:    { day:'Monday',            desc:'Relatable, shareable humour rooted in musician/performer culture. Builds personality and reach through entertainment. Pairs with a gig post to capture weekend-mood scrollers.' },
-  rook:    { day:'Tuesday',           desc:'Your brand voice at its strongest. Educational, opinionated, or storytelling content that positions you as the go-to resource — booking tips, industry myths, insider knowledge.' },
-  tag:     { day:'Wednesday',         desc:'Tag a collaborator, friend, venue, or fellow artist. Creates community and cross-pollination. Mid-week is prime for visibility boosts through shared audiences.' },
-  venue:   { day:'Wednesday',         desc:'Show appreciation for a venue, promoter, or peer. Reposts strengthen relationships and demonstrate you\'re embedded in the scene — not just self-promoting.' },
-  quote:   { day:'Thursday',          desc:'A punchy truth, lyric, or insight that resonates with musicians and fans alike. Thursday builds hype before the weekend. High save and share potential.' },
-  reels:   { day:'Friday',            desc:'Short-form video or ranked/listicle content. Friday = peak discovery. Reels get pushed to non-followers; lists are highly shareable in stories and DMs.' },
-  debate:  { day:'Friday',            desc:'A spicy or thought-provoking take that invites comments and responses. Drives engagement and signals the algorithm that your content sparks real conversation.' },
-  crowd:   { day:'Saturday',          desc:'Energy content — live show clips, crowd reactions, behind-the-scenes, venue energy. Amplifies FOMO for weekend events and keeps the buzz going post-show.' },
-  imagery: { day:'Sunday',            desc:'Aesthetic, atmospheric, or symbolic imagery tied to your brand identity. Creates visual cohesion on the feed and appeals to the reflective Sunday scroll mood.' },
-  social:  { day:'Sunday',            desc:'Reviews, testimonials, shout-outs, press mentions, or audience reactions. Builds trust and credibility. Sunday audiences are relaxed and receptive to recommendation-style content.' },
-  gig:     { day:'Paired with main post', desc:'Event announcements and ticket links. Paired with the day\'s main content to boost reach. Keep these consistent in format so followers always know where to find show info.' },
+  meme:    {day:'Monday',           desc:'Relatable, shareable humour rooted in musician/performer culture. Builds personality and reach through entertainment. Pairs with a gig post to capture weekend-mood scrollers.'},
+  rook:    {day:'Tuesday',          desc:'Your brand voice at its strongest. Educational, opinionated, or storytelling content that positions you as the go-to resource — booking tips, industry myths, insider knowledge.'},
+  tag:     {day:'Wednesday',        desc:'Tag a collaborator, friend, venue, or fellow artist. Creates community and cross-pollination. Mid-week is prime for visibility boosts through shared audiences.'},
+  venue:   {day:'Wednesday',        desc:"Show appreciation for a venue, promoter, or peer. Reposts strengthen relationships and demonstrate you're embedded in the scene — not just self-promoting."},
+  quote:   {day:'Thursday',         desc:'A punchy truth, lyric, or insight that resonates with musicians and fans alike. Thursday builds hype before the weekend. High save and share potential.'},
+  reels:   {day:'Friday',           desc:'Short-form video or ranked/listicle content. Friday = peak discovery. Reels get pushed to non-followers; lists are highly shareable in stories and DMs.'},
+  debate:  {day:'Friday',           desc:'A spicy or thought-provoking take that invites comments and responses. Drives engagement and signals the algorithm that your content sparks real conversation.'},
+  crowd:   {day:'Saturday',         desc:'Energy content — live show clips, crowd reactions, behind-the-scenes, venue energy. Amplifies FOMO for weekend events and keeps the buzz going post-show.'},
+  imagery: {day:'Sunday',           desc:'Aesthetic, atmospheric, or symbolic imagery tied to your brand identity. Creates visual cohesion on the feed and appeals to the reflective Sunday scroll mood.'},
+  social:  {day:'Sunday',           desc:'Reviews, testimonials, shout-outs, press mentions, or audience reactions. Builds trust and credibility. Sunday audiences are relaxed and receptive to recommendation-style content.'},
+  gig:     {day:'Paired with main', desc:"Event announcements and ticket links. Paired with the day's main content to boost reach. Keep these consistent in format so followers always know where to find show info."},
 };
-
 const IDEAS_SEED = {
-  meme:    ['Behind-the-scenes load-in chaos', 'Soundcheck meme template', 'Band communication stereotypes'],
-  rook:    ['How to get your first venue booking', '5 things promoters won\'t tell you', 'What we charge and why'],
-  quote:   ['"The stage doesn\'t lie"', 'Local music scene truth bombs', 'Lyric spotlight from recent show'],
-  reels:   ['Top 5 venues in your city', 'Packing for a gig reel', 'Set-up timelapse'],
-  social:  ['Screenshot of a 5-star review', 'Fan DM reaction', 'Press mention graphic'],
+  meme:    ['Behind-the-scenes load-in chaos','Soundcheck meme','Band communication stereotypes'],
+  rook:    ['How to get your first venue booking','5 things promoters won\'t tell you','What we charge and why'],
+  quote:   ['"The stage doesn\'t lie"','Local music scene truth bombs','Lyric spotlight from recent show'],
+  reels:   ['Top 5 venues in your city','Packing for a gig reel','Set-up timelapse'],
+  social:  ['Screenshot of a 5-star review','Fan DM reaction','Press mention graphic'],
 };
 
 // ── STATE ──────────────────────────────────────────────────────────────
-let posts    = JSON.parse(localStorage.getItem('bella_posts')    || '[]');
-let schedule = JSON.parse(localStorage.getItem('bella_schedule') || '{}');
-let ideas    = JSON.parse(localStorage.getItem('bella_ideas')    || 'null')
-               || Object.fromEntries(Object.keys(TYPES).map(k => [k, (IDEAS_SEED[k] || []).slice()]));
-let notes    = localStorage.getItem('bella_notes') || '';
+let posts    = JSON.parse(localStorage.getItem('bella_posts_v3')    || '[]');
+let schedule = JSON.parse(localStorage.getItem('bella_schedule_v3') || '{}');
+let ideas    = JSON.parse(localStorage.getItem('bella_ideas_v3')    || 'null')
+               || Object.fromEntries(Object.keys(TYPES).map(k=>[k,(IDEAS_SEED[k]||[]).slice()]));
+let typeNotes = JSON.parse(localStorage.getItem('bella_typenotes')  || '{}');
+let notes    = localStorage.getItem('bella_notes_v3') || '';
 let activeFilter = 'all';
+let dragPostId = null;
+let pendingImgPostId = null;
 
 function save() {
-  localStorage.setItem('bella_posts',    JSON.stringify(posts));
-  localStorage.setItem('bella_schedule', JSON.stringify(schedule));
-  localStorage.setItem('bella_ideas',    JSON.stringify(ideas));
+  localStorage.setItem('bella_posts_v3',    JSON.stringify(posts));
+  localStorage.setItem('bella_schedule_v3', JSON.stringify(schedule));
+  localStorage.setItem('bella_ideas_v3',    JSON.stringify(ideas));
+  localStorage.setItem('bella_typenotes',   JSON.stringify(typeNotes));
 }
 
-// ── TABS ───────────────────────────────────────────────────────────────
+// ── TABS ──────────────────────────────────────────────────────────────
 function showTab(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
-  if (id === 'library')    renderLibrary();
-  if (id === 'grid')       renderGrid();
-  if (id === 'categories') renderCategories();
-  if (id === 'ideas')      renderIdeas();
-  if (id === 'schedule')   renderSchedule();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='ig')         renderIG();
+  if(id==='categories') renderCategories();
+  if(id==='typenotes')  renderTypeNotes();
+  if(id==='ideas')      renderIdeas();
+  if(id==='planner')    renderCalendar();
 }
 
-// ── SCHEDULE ───────────────────────────────────────────────────────────
-function renderSchedule() {
-  const grid = document.getElementById('week-grid');
-  grid.innerHTML = '';
-  DAYS.forEach(day => {
-    const col = document.createElement('div');
-    col.className = 'day-col';
-    col.innerHTML = `<div class="day-label">${day.label}</div><div class="day-slots" id="slots-${day.key}"></div>`;
-    grid.appendChild(col);
-    const slotsEl = col.querySelector('.day-slots');
-    day.slots.forEach((slotType, si) => {
-      const slotId = `${day.key}-${slotType}-${si}`;
-      const pid    = schedule[slotId];
-      const post   = pid ? posts.find(p => p.id === pid) : null;
-      const slot   = document.createElement('div');
-      slot.className = 'slot filled';
-      slot.dataset.slotId = slotId;
-      if (post) {
-        const tc = TYPES[post.type]?.cls || 'type-social';
-        slot.classList.add(tc);
-        slot.draggable = true;
-        slot.innerHTML = `<div><div style="font-weight:500">${post.title}</div><div class="slot-sub">${TYPES[post.type]?.label || post.type}</div></div>`;
-        slot.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', post.id + '|' + slotId); });
-        slot.addEventListener('dblclick',  () => { delete schedule[slotId]; save(); renderSchedule(); renderGrid(); showToast('Slot cleared'); });
-      } else {
-        slot.innerHTML = `<span class="slot-placeholder">${SLOT_NAMES[slotType]}</span>`;
-      }
-      slot.addEventListener('dragover',  e  => { e.preventDefault(); slot.classList.add('drop-target'); });
-      slot.addEventListener('dragleave', () => slot.classList.remove('drop-target'));
-      slot.addEventListener('drop', e => {
-        e.preventDefault(); slot.classList.remove('drop-target');
-        const parts = e.dataTransfer.getData('text/plain').split('|');
-        const pid2 = parts[0], fromSlot = parts[1];
-        if (fromSlot && fromSlot !== slotId) delete schedule[fromSlot];
-        schedule[slotId] = pid2;
-        save(); renderSchedule(); renderGrid();
+// ── CALENDAR ──────────────────────────────────────────────────────────
+function renderCalendar() {
+  const scroll = document.getElementById('cal-scroll');
+  scroll.innerHTML = '';
+  for(let w=0; w<WEEKS; w++) {
+    if(w>0) {
+      const div = document.createElement('div');
+      div.className = 'week-divider';
+      scroll.appendChild(div);
+    }
+    const block = document.createElement('div');
+    block.className = 'week-block';
+    DAYS.forEach(day => {
+      const col = document.createElement('div');
+      col.className = 'day-col';
+      const wLabel = w === 0 ? day.label : `${day.label} W${w+1}`;
+      col.innerHTML = `<div class="day-label">${wLabel}</div><div class="day-slots" id="slots-w${w}-${day.key}"></div>`;
+      block.appendChild(col);
+      const slotsEl = col.querySelector('.day-slots');
+      day.slots.forEach((slotType, si) => {
+        const slotId = `w${w}-${day.key}-${slotType}-${si}`;
+        renderSlot(slotsEl, slotId, slotType);
       });
-      slotsEl.appendChild(slot);
     });
-  });
+    scroll.appendChild(block);
+  }
 }
 
-// ── LIBRARY ────────────────────────────────────────────────────────────
+function renderSlot(container, slotId, slotType) {
+  const pid  = schedule[slotId];
+  const post = pid ? posts.find(p=>p.id===pid) : null;
+  const slot = document.createElement('div');
+  slot.className = 'slot' + (post ? ' has-post' : '');
+  slot.dataset.slotId   = slotId;
+  slot.dataset.slotType = slotType;
+
+  if(post) {
+    const tc = TYPES[post.type]?.cls || 'type-social';
+    const imgEl = post.img
+      ? `<img class="slot-img" src="${post.img}" alt=""/>`
+      : `<div style="width:28px;height:28px;border-radius:4px;background:var(--bg3);flex-shrink:0;margin-right:6px;"></div>`;
+    slot.innerHTML = `
+      ${imgEl}
+      <div class="slot-info">
+        <div class="slot-name">${post.title}</div>
+        <div class="slot-type">${TYPES[post.type]?.label||post.type}</div>
+      </div>
+      <button class="slot-clear" title="Clear slot" onclick="clearSlot('${slotId}',event)">×</button>
+    `;
+  } else {
+    slot.innerHTML = `<span class="slot-placeholder">${SLOT_NAMES[slotType]||slotType}</span>`;
+  }
+
+  // Drop target events
+  slot.addEventListener('dragover',  e => { e.preventDefault(); slot.classList.add('drag-over'); });
+  slot.addEventListener('dragleave', ()=> slot.classList.remove('drag-over'));
+  slot.addEventListener('drop', e => {
+    e.preventDefault(); slot.classList.remove('drag-over');
+    const pid2 = e.dataTransfer.getData('text/plain');
+    if(!pid2) return;
+    // remove from any other slot
+    Object.keys(schedule).forEach(k=>{ if(schedule[k]===pid2) delete schedule[k]; });
+    schedule[slotId] = pid2;
+    save(); renderCalendar(); renderLibrary();
+  });
+  slot.addEventListener('dblclick', () => { clearSlot(slotId); });
+  container.appendChild(slot);
+}
+
+function clearSlot(slotId, e) {
+  if(e) e.stopPropagation();
+  delete schedule[slotId];
+  save(); renderCalendar(); renderLibrary();
+  showToast('Slot cleared');
+}
+
+// ── LIBRARY ──────────────────────────────────────────────────────────
 function addPost() {
   const title = document.getElementById('new-title').value.trim();
   const type  = document.getElementById('new-type').value;
-  if (!title) { showToast('Enter a post title first'); return; }
-  posts.push({ id: Date.now().toString(), title, type });
+  if(!title) { showToast('Enter a title first'); return; }
+  posts.push({ id: Date.now().toString(), title, type, img: null });
   save();
   document.getElementById('new-title').value = '';
   renderLibrary();
-  showToast('Post added to library');
+  showToast('Post added');
 }
 
 function renderLibrary() {
-  const lib       = document.getElementById('library');
-  const countsEl  = document.getElementById('type-counts');
+  const scroll    = document.getElementById('post-cards-scroll');
   const filterBar = document.getElementById('filter-bar');
   const typeCounts = {};
-  posts.forEach(p => { typeCounts[p.type] = (typeCounts[p.type] || 0) + 1; });
+  posts.forEach(p => { typeCounts[p.type] = (typeCounts[p.type]||0)+1; });
 
-  // Stat cards
-  countsEl.innerHTML = '';
-  Object.entries(typeCounts).forEach(([key, count]) => {
-    const div = document.createElement('div');
-    div.className = 'stat';
-    div.innerHTML = `<div class="stat-val">${count}</div><div class="stat-label">${TYPES[key]?.label || key}</div>`;
-    countsEl.appendChild(div);
-  });
-  if (!Object.keys(typeCounts).length)
-    countsEl.innerHTML = '<div class="empty">No posts yet — add one above.</div>';
-
-  // Filter buttons
   filterBar.innerHTML = '';
   const allBtn = document.createElement('button');
-  allBtn.className = 'filter-btn' + (activeFilter === 'all' ? ' active' : '');
+  allBtn.className = 'filter-btn'+(activeFilter==='all'?' active':'');
   allBtn.textContent = `All (${posts.length})`;
-  allBtn.onclick = () => { activeFilter = 'all'; renderLibrary(); };
+  allBtn.onclick = ()=>{ activeFilter='all'; renderLibrary(); };
   filterBar.appendChild(allBtn);
-  Object.entries(TYPES).forEach(([key, t]) => {
-    if (!typeCounts[key]) return;
+  Object.entries(TYPES).forEach(([key,t])=>{
+    if(!typeCounts[key]) return;
     const btn = document.createElement('button');
-    btn.className = 'filter-btn' + (activeFilter === key ? ' active' : '');
+    btn.className = 'filter-btn'+(activeFilter===key?' active':'');
     btn.textContent = `${t.label} (${typeCounts[key]})`;
-    btn.onclick = () => { activeFilter = key; renderLibrary(); };
+    btn.onclick = ()=>{ activeFilter=key; renderLibrary(); };
     filterBar.appendChild(btn);
   });
 
-  // Post cards
-  const filtered = activeFilter === 'all' ? posts : posts.filter(p => p.type === activeFilter);
-  lib.innerHTML = '';
-  if (!filtered.length) { lib.innerHTML = '<div class="empty">No posts in this category yet.</div>'; return; }
+  const filtered = activeFilter==='all' ? posts : posts.filter(p=>p.type===activeFilter);
+  scroll.innerHTML = '';
+  if(!filtered.length) {
+    scroll.innerHTML = '<div class="empty" style="padding:1rem;">No posts yet — add one above.</div>';
+    return;
+  }
+  const scheduledIds = new Set(Object.values(schedule));
   filtered.forEach(post => {
     const card = document.createElement('div');
-    card.className = 'post-card';
+    card.className = 'post-card' + (scheduledIds.has(post.id) ? ' scheduled' : '');
     card.draggable = true;
+    card.dataset.postId = post.id;
     const tc = TYPES[post.type]?.cls || 'type-social';
-    const isScheduled = Object.values(schedule).includes(post.id);
-    card.innerHTML = `
-      <span class="badge ${tc}">${TYPES[post.type]?.label || post.type}</span>
-      <span class="title">${post.title}</span>
-      ${isScheduled ? '<span class="scheduled-tag">Scheduled</span>' : '<span class="drag-hint">drag to schedule</span>'}
-      <button class="del-btn" onclick="deletePost('${post.id}')">×</button>
-    `;
-    card.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', post.id); });
-    lib.appendChild(card);
+
+    if(post.img) {
+      card.innerHTML = `
+        <img class="post-card-img" src="${post.img}" alt="" onclick="triggerImgUpload('${post.id}')"/>
+        <div class="post-card-body">
+          <span class="post-card-badge ${tc}">${TYPES[post.type]?.label||post.type}</span>
+          <div class="post-card-title">${post.title}</div>
+          ${scheduledIds.has(post.id)?'<span class="post-card-scheduled">Scheduled</span>':''}
+        </div>
+        <button class="post-card-del" onclick="deletePost('${post.id}')">×</button>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="post-card-img-placeholder" onclick="triggerImgUpload('${post.id}')">
+          <span>＋</span>
+          <small>Add photo</small>
+        </div>
+        <div class="post-card-body">
+          <span class="post-card-badge ${tc}">${TYPES[post.type]?.label||post.type}</span>
+          <div class="post-card-title">${post.title}</div>
+          ${scheduledIds.has(post.id)?'<span class="post-card-scheduled">Scheduled</span>':''}
+        </div>
+        <button class="post-card-del" onclick="deletePost('${post.id}')">×</button>
+      `;
+    }
+
+    card.addEventListener('dragstart', e => {
+      dragPostId = post.id;
+      e.dataTransfer.setData('text/plain', post.id);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    scroll.appendChild(card);
   });
 }
 
 function deletePost(id) {
-  posts = posts.filter(p => p.id !== id);
-  Object.keys(schedule).forEach(k => { if (schedule[k] === id) delete schedule[k]; });
-  save(); renderLibrary(); renderSchedule(); renderGrid();
+  posts = posts.filter(p=>p.id!==id);
+  Object.keys(schedule).forEach(k=>{ if(schedule[k]===id) delete schedule[k]; });
+  save(); renderLibrary(); renderCalendar();
   showToast('Post removed');
 }
 
-// ── IG GRID ────────────────────────────────────────────────────────────
-function renderGrid() {
+// ── IMAGE UPLOAD ──────────────────────────────────────────────────────
+function triggerImgUpload(postId) {
+  pendingImgPostId = postId;
+  document.getElementById('img-upload-input').click();
+}
+document.getElementById('img-upload-input').addEventListener('change', function() {
+  const file = this.files[0];
+  if(!file || !pendingImgPostId) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const post = posts.find(p=>p.id===pendingImgPostId);
+    if(post) {
+      post.img = e.target.result;
+      save(); renderLibrary(); renderCalendar(); renderIG();
+      showToast('Photo added');
+    }
+    pendingImgPostId = null;
+    this.value = '';
+  };
+  reader.readAsDataURL(file);
+});
+
+// ── IG PREVIEW ────────────────────────────────────────────────────────
+function renderIG() {
   const grid    = document.getElementById('ig-grid');
   const orderEl = document.getElementById('ig-order');
   const scheduled = [];
-  DAYS.forEach(day => {
-    day.slots.forEach((slotType, si) => {
-      const pid = schedule[`${day.key}-${slotType}-${si}`];
-      if (pid) {
-        const post = posts.find(p => p.id === pid);
-        if (post) scheduled.push({ ...post, day: day.label });
-      }
+  for(let w=0;w<WEEKS;w++) {
+    DAYS.forEach(day=>{
+      day.slots.forEach((slotType,si)=>{
+        const pid = schedule[`w${w}-${day.key}-${slotType}-${si}`];
+        if(pid) {
+          const post = posts.find(p=>p.id===pid);
+          if(post) scheduled.push({...post, dayLabel: day.label, week: w+1});
+        }
+      });
     });
-  });
+  }
 
   grid.innerHTML = '';
-  const total = Math.max(9, Math.ceil((scheduled.length + 1) / 3) * 3);
-  for (let i = 0; i < total; i++) {
+  const total = Math.max(9, Math.ceil((scheduled.length+1)/3)*3);
+  for(let i=0;i<total;i++) {
     const cell = document.createElement('div');
     cell.className = 'ig-cell';
-    if (scheduled[i]) {
+    if(scheduled[i]) {
       const p  = scheduled[i];
-      const tc = TYPES[p.type]?.cls || 'type-social';
-      cell.innerHTML = `<div><div class="ig-type ${tc}">${TYPES[p.type]?.label || p.type}</div><div class="ig-title">${p.title.substring(0,22)}${p.title.length > 22 ? '…' : ''}</div></div>`;
+      const tc = TYPES[p.type]?.cls||'type-social';
+      if(p.img) {
+        cell.innerHTML = `
+          <img src="${p.img}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+          <div class="ig-cell-overlay">
+            <span class="ig-cell-type ${tc}">${TYPES[p.type]?.label||p.type}</span>
+            <div class="ig-cell-title">${p.title.substring(0,24)}${p.title.length>24?'…':''}</div>
+          </div>`;
+      } else {
+        cell.style.background='var(--bg3)';
+        cell.innerHTML=`
+          <div style="text-align:center;padding:6px;">
+            <div class="ig-cell-type ${tc}" style="display:inline-block;margin-bottom:4px;">${TYPES[p.type]?.label||p.type}</div>
+            <div style="font-size:9px;color:var(--text2);font-family:var(--serif);font-style:italic;">${p.title.substring(0,24)}${p.title.length>24?'…':''}</div>
+          </div>`;
+      }
     } else {
-      cell.style.opacity = '0.25';
+      cell.classList.add('ig-cell-empty');
     }
     grid.appendChild(cell);
   }
 
   orderEl.innerHTML = '';
-  if (!scheduled.length) { orderEl.innerHTML = '<div class="empty">Schedule some posts first.</div>'; return; }
-  scheduled.forEach((p, i) => {
+  if(!scheduled.length) { orderEl.innerHTML='<div class="empty">Schedule posts to see order.</div>'; return; }
+  scheduled.forEach((p,i)=>{
     const row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid rgba(0,0,0,.07);';
-    const tc = TYPES[p.type]?.cls || 'type-social';
+    row.className = 'ig-order-row';
+    const tc = TYPES[p.type]?.cls||'type-social';
+    const thumbEl = p.img
+      ? `<img class="ig-order-thumb" src="${p.img}" alt=""/>`
+      : `<div class="ig-order-thumb" style="border-radius:3px;background:var(--bg3);"></div>`;
     row.innerHTML = `
-      <span style="font-family:var(--cinzel);font-size:11px;color:var(--text3);min-width:20px">${i + 1}</span>
-      <span class="badge ${tc}">${p.day}</span>
-      <span style="font-size:13px;font-family:var(--serif)">${p.title}</span>
-    `;
+      <span class="ig-order-num">${i+1}</span>
+      ${thumbEl}
+      <div class="ig-order-info">
+        <div><span class="ig-order-badge ${tc}">${TYPES[p.type]?.label||p.type}</span> <span style="font-size:10px;color:var(--text3);font-family:var(--cinzel);letter-spacing:.04em;">${p.dayLabel} W${p.week}</span></div>
+        <div class="ig-order-title">${p.title}</div>
+      </div>`;
     orderEl.appendChild(row);
   });
 }
 
-// ── CATEGORIES ─────────────────────────────────────────────────────────
+// ── CATEGORIES ────────────────────────────────────────────────────────
 function renderCategories() {
   const grid = document.getElementById('cat-grid');
   grid.innerHTML = '';
-  Object.entries(CAT_INFO).forEach(([key, cat]) => {
-    const tc   = TYPES[key]?.cls || 'type-social';
+  Object.entries(CAT_INFO).forEach(([key,cat])=>{
+    const tc   = TYPES[key]?.cls||'type-social';
     const card = document.createElement('div');
     card.className = `cat-card ${tc}`;
-    card.innerHTML = `<h3>${TYPES[key]?.label || key}</h3><div class="cat-day">${cat.day}</div><p>${cat.desc}</p>`;
+    card.innerHTML = `<h3>${TYPES[key]?.label||key}</h3><div class="cat-day">${cat.day}</div><p>${cat.desc}</p>`;
     grid.appendChild(card);
   });
 }
 
-// ── IDEAS ──────────────────────────────────────────────────────────────
+// ── TYPE NOTES ────────────────────────────────────────────────────────
+function renderTypeNotes() {
+  const grid = document.getElementById('type-notes-grid');
+  grid.innerHTML = '';
+  Object.entries(TYPES).forEach(([key,t])=>{
+    const tc   = t.cls;
+    const card = document.createElement('div');
+    card.className = 'type-note-card';
+    const saved = typeNotes[key] || '';
+    card.innerHTML = `
+      <h4><span class="post-card-badge ${tc}" style="display:inline-block">${t.label}</span></h4>
+      <textarea class="type-note-textarea" placeholder="Notes, strategy, tone tips, examples for ${t.label}...">${saved}</textarea>
+    `;
+    const ta = card.querySelector('textarea');
+    ta.addEventListener('input', ()=>{
+      typeNotes[key] = ta.value;
+      save();
+    });
+    grid.appendChild(card);
+  });
+}
+
+// ── IDEAS ─────────────────────────────────────────────────────────────
 function renderIdeas() {
   const grid = document.getElementById('ideas-grid');
   grid.innerHTML = '';
-  Object.entries(TYPES).forEach(([key, t]) => {
+  Object.entries(TYPES).forEach(([key,t])=>{
     const card = document.createElement('div');
     card.className = 'idea-card';
     const tc = t.cls;
-    const itemsHTML = (ideas[key] || []).map((idea, i) =>
+    const itemsHTML = (ideas[key]||[]).map((idea,i)=>
       `<li title="Click to remove" onclick="removeIdea('${key}',${i})">${idea}</li>`
     ).join('');
     card.innerHTML = `
-      <h4><span class="badge ${tc}" style="display:inline-block">${t.label}</span></h4>
-      <ul>${itemsHTML || '<li style="list-style:none;color:var(--text3);padding-left:0">No ideas yet</li>'}</ul>
+      <h4><span class="post-card-badge ${tc}" style="display:inline-block">${t.label}</span></h4>
+      <ul>${itemsHTML||'<li style="list-style:none;color:var(--text3);padding-left:0">No ideas yet</li>'}</ul>
       <div class="idea-input-row">
         <input id="idea-${key}" placeholder="Add an idea..." onkeydown="if(event.key==='Enter')addIdea('${key}')"/>
         <button class="idea-add-btn" onclick="addIdea('${key}')">+</button>
@@ -532,38 +724,35 @@ function renderIdeas() {
     grid.appendChild(card);
   });
 }
-
 function addIdea(type) {
-  const input = document.getElementById('idea-' + type);
+  const input = document.getElementById('idea-'+type);
   const val   = input.value.trim();
-  if (!val) return;
-  if (!ideas[type]) ideas[type] = [];
+  if(!val) return;
+  if(!ideas[type]) ideas[type]=[];
   ideas[type].push(val);
   save(); renderIdeas();
 }
-
-function removeIdea(type, idx) {
-  ideas[type].splice(idx, 1);
+function removeIdea(type,idx) {
+  ideas[type].splice(idx,1);
   save(); renderIdeas();
 }
 
-// ── TOAST ──────────────────────────────────────────────────────────────
+// ── TOAST ─────────────────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  setTimeout(()=>t.classList.remove('show'), 2000);
 }
 
-// ── NOTES ──────────────────────────────────────────────────────────────
+// ── NOTES ─────────────────────────────────────────────────────────────
 document.getElementById('notes-area').value = notes;
-document.getElementById('notes-area').addEventListener('input', e => {
-  localStorage.setItem('bella_notes', e.target.value);
+document.getElementById('notes-area').addEventListener('input', e=>{
+  localStorage.setItem('bella_notes_v3', e.target.value);
 });
 
-// ── INIT ───────────────────────────────────────────────────────────────
-renderSchedule();
+// ── INIT ──────────────────────────────────────────────────────────────
+renderCalendar();
 renderLibrary();
-renderGrid();
 </script>
 </body>
 </html>
